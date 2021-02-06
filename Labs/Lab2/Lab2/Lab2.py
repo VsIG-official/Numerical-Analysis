@@ -1,23 +1,29 @@
 
-matrix=[[1,2,4],[3,-4,1],[2,3,6]]
-rightPart=[4,-1,4]
+# starting value
+matrix=[[3,-2,5,0],[4,5,8,1],[1,1,2,1],[2,7,6,5]]
+rightPart=[2,4,5,7]
 isSquare=True
 
+# copy matrix to create extended matrix
 extendedMatrix=matrix
 
-x=0
-while x < len(rightPart):
-    extendedMatrix[x].append(rightPart[x])
-    x+=1
+# add right part to main matrix
+RPCounter=0
+while RPCounter < len(rightPart):
+    extendedMatrix[RPCounter].append(rightPart[RPCounter])
+    RPCounter+=1
 
+# getting rows and columns
 rows=len(extendedMatrix)
 columns=len(extendedMatrix)+1
 
+# just printing
 print(rows)
 print(columns)
 
 print(extendedMatrix)
 
+# check, if matrix is Square
 if rows==columns:
    isSquare=True
 else:
