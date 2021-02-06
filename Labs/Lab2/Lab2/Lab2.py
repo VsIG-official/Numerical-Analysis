@@ -1,8 +1,14 @@
 
 # starting value
-matrix=[[3,-2,5,0],[4,5,8,1],[1,1,2,1],[2,7,6,5]]
+matrix=[[3,-2,5,0],
+        [4,5,8,1],
+        [1,1,2,1],
+        [2,7,6,5]]
+
 rightPart=[2,4,5,7]
-isSquare=True
+
+n=len(matrix)
+X=[0]*n
 
 # copy matrix to create extended matrix
 extendedMatrix=matrix
@@ -23,8 +29,4 @@ print(columns)
 
 print(extendedMatrix)
 
-# check, if matrix is Square
-if rows==columns:
-   isSquare=True
-else:
-   isSquare=False
+print(X)
