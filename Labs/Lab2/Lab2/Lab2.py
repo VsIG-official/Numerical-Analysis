@@ -30,7 +30,7 @@ while RPCounter < len(rightPart):
 
 # getting rows and columns
 rows = len(matrix)
-columns = len(matrix)+1
+columns = len(matrix)
 
 extendedRows = len(extendedMatrix)
 extendedColumns = len(extendedMatrix)+1
@@ -43,9 +43,18 @@ numFactor = 0
 for i in range(rows):
     for j in range(i+1,columns):
 
-        k = matrix[i][i]
-        l = matrix[j][i]
+        if matrix[i][j] == 0:
+            continue
+        topElement = extendedMatrix[i][i]
+        bottomElement = extendedMatrix[j][i]
 
-        if l!=0:
-            m = k / l
-            print(m)
+        factor = topElement / bottomElement
+        print(factor)
+
+        for k in range(i,extendedColumns):
+           extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * factor)
+
+           #print(extendedMatrix[j][k])
+           #print("i=",i,"j=",j,"k=",k)
+           print(extendedMatrix)
+
