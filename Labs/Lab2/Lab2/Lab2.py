@@ -10,6 +10,15 @@ rightPart = [2,4,5,7]
 n = len(matrix)
 X = [0] * n
 
+# just printing
+def PrintAll():
+    print("Rows = ", rows)
+    print("Columns = ", columns)
+
+    print("Extended Matrix = ", extendedMatrix)
+
+    print("X vector = ", X)
+
 # copy matrix to create extended matrix
 extendedMatrix = matrix
 
@@ -20,13 +29,23 @@ while RPCounter < len(rightPart):
     RPCounter += 1
 
 # getting rows and columns
-rows = len(extendedMatrix)
-columns = len(extendedMatrix)+1
+rows = len(matrix)
+columns = len(matrix)+1
 
-# just printing
-print("Rows = ", rows)
-print("Columns = ", columns)
+extendedRows = len(extendedMatrix)
+extendedColumns = len(extendedMatrix)+1
 
-print("Extended Matrix = ", extendedMatrix)
+PrintAll()
 
-print("X vector = ", X)
+numFactor = 0
+
+# iterating through matrix
+for i in range(rows):
+    for j in range(i+1,columns):
+
+        k = matrix[i][i]
+        l = matrix[j][i]
+
+        if l!=0:
+            m = k / l
+            print(m)
