@@ -39,20 +39,14 @@ PrintAll()
 
 # iterating through matrix
 for i in range(rows):
-    if i==3:
-        print("asdadadadad")
     for j in range(i+1,columns):
 
-        if matrix[i][j] == 0:continue
+        if matrix[j][i] == 0:continue
         topElement = extendedMatrix[i][i]
         bottomElement = extendedMatrix[j][i]
 
-        factor = topElement / bottomElement
-        print("factor=",factor)
+        multiplier = topElement / bottomElement
 
         for k in range(i,extendedColumns):
-           extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * factor)
-
-           if i==3:
-               print("I IS 3")
-           print(extendedMatrix)
+           extendedMatrix[j][k] = extendedMatrix[i][k]
+           - (extendedMatrix[j][k] * multiplier)
