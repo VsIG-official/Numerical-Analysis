@@ -20,7 +20,7 @@ def PrintAll():
     print("X vector = ", X)
 
 # copy matrix to create extended matrix
-extendedMatrix = matrix
+extendedMatrix = matrix.copy()
 
 # add right part to main matrix
 RPCounter = 0
@@ -37,24 +37,22 @@ extendedColumns = len(extendedMatrix)+1
 
 PrintAll()
 
-numFactor = 0
-
 # iterating through matrix
 for i in range(rows):
+    if i==3:
+        print("asdadadadad")
     for j in range(i+1,columns):
 
-        if matrix[i][j] == 0:
-            continue
+        if matrix[i][j] == 0:continue
         topElement = extendedMatrix[i][i]
         bottomElement = extendedMatrix[j][i]
 
         factor = topElement / bottomElement
-        print(factor)
+        print("factor=",factor)
 
         for k in range(i,extendedColumns):
            extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * factor)
 
-           #print(extendedMatrix[j][k])
-           #print("i=",i,"j=",j,"k=",k)
+           if i==3:
+               print("I IS 3")
            print(extendedMatrix)
-
