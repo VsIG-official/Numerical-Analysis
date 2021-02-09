@@ -48,5 +48,33 @@ for i in range(rows):
         multiplier = topElement / bottomElement
 
         for k in range(i,extendedColumns):
-           extendedMatrix[j][k] = extendedMatrix[i][k]
-           - (extendedMatrix[j][k] * multiplier)
+           extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
+
+print(extendedMatrix)
+
+print(rows)
+print(columns)
+print(extendedRows)
+print(extendedColumns)
+
+# Search solutions
+
+#for i in range(n-1, -1, -1):
+    #X[n-1] = extendedMatrix[i][extendedColumns-1]
+
+    #for j in range(extendedRows+1, extendedColumns-1):
+    #    b -= extendedMatrix[i][j] * X[j]
+    #x = b / extendedMatrix[i][i]
+    #X[i] = x
+
+for i in range(n-1, -1, -1):
+    element = extendedMatrix[i][i]
+    if element == 0:continue
+    for j in range(rows):
+        extendedMatrix[i][j] /= element
+        for k in range(i):
+            extendedMatrix[k][rows] -= extendedMatrix[k][i] * extendedMatrix[i][rows]
+            extendedMatrix[k][i] = 0
+            X[i] = extendedMatrix[k][rows]
+print(X)
+print(extendedMatrix)
