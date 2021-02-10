@@ -7,6 +7,8 @@ matrix = [[3,-2,5,0],
 
 rightPart = [2,4,5,7]
 
+onesDiagonal = True
+
 n = len(matrix)
 X = [0] * n
 
@@ -18,7 +20,7 @@ def PrintAll():
 
     #PrintExtendedMatrix()
 
-    PrintX()
+    #PrintX()
 
 # Print X vector
 def PrintX():
@@ -40,12 +42,12 @@ def PrintParametrs():
     print("Columns =", columns)
     print("n =", n)
 
-PrintAll()
+#PrintAll()
 
 # copy matrix to create extended matrix
 extendedMatrix = matrix.copy()
 
-PrintAll()
+#PrintAll()
 
 # add right part to main matrix
 RPCounter = 0
@@ -53,7 +55,7 @@ while RPCounter < len(rightPart):
     extendedMatrix[RPCounter].append(rightPart[RPCounter])
     RPCounter += 1
 
-PrintAll()
+#PrintAll()
 
 # getting rows and columns
 rows = n
@@ -78,14 +80,37 @@ for i in range(rows):
         for k in range(i,extendedColumns):
            extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
 
+print(extendedMatrix)
+
+# Do Row Echelon
+if onesDiagonal == True:
+    for i in range(n):
+        for j in range(n):
+            #print("j,i",matrix[j][i])
+            if i == j:
+                print("j,i",matrix[j][i])
+                if matrix[j][i] == 0:continue
+                topElement = 1
+                bottomElement = extendedMatrix[j][i]
+                multiplier = topElement / bottomElement
+                for k in range(i,extendedColumns):
+                    extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
+
+print(extendedMatrix)
+
 # Search for X
 # Back-substitution
 for i in range(rows-1, -1, -1):
     element = extendedMatrix[i][extendedColumns-1]
     for j in range(i+1, extendedColumns-1):
+        print("elem",element)
         element -= extendedMatrix[i][j] * X[j]
     finalElement = element / extendedMatrix[i][i]
+    print("fin",finalElement)
     X[i] = round(finalElement,6)
 
 print(extendedMatrix)
+
+
+#print(extendedMatrix)
 print(X)
