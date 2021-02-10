@@ -86,14 +86,15 @@ print(extendedMatrix)
 if onesDiagonal == True:
     for i in range(n):
         for j in range(n):
-            #print("j,i",matrix[j][i])
             if i == j:
-                print("j,i",matrix[j][i])
+                #print("j,i",matrix[j][i])
                 if matrix[j][i] == 0:continue
                 topElement = 1
                 bottomElement = extendedMatrix[j][i]
                 multiplier = topElement / bottomElement
+                #print("mul",multiplier)
                 for k in range(i,extendedColumns):
+                    print("exMatEl",extendedMatrix[j][k])
                     extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
 
 print(extendedMatrix)
