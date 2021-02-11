@@ -90,7 +90,7 @@ extendedColumns = len(extendedMatrix)+1
 # endregion Getting rows and columns
 
 # Iterating through matrix
-# Forward Elimination
+# Forward Elimination without Row Echelon
 for i in range(rows):
     for j in range(i+1,columns):
 
@@ -118,7 +118,7 @@ if onesDiagonal == True:
                     extendedMatrix[j][k] = extendedMatrix[j][k] * multiplier
 
 # Search for X
-# Back-substitution
+# Back-Substitution
 for i in range(rows-1, -1, -1):
     element = extendedMatrix[i][extendedColumns-1]
     for j in range(i+1, extendedColumns-1):
@@ -128,3 +128,11 @@ for i in range(rows-1, -1, -1):
 
 PrintExtendedMatrix()
 PrintX()
+
+# region Check the results
+
+R = rightPart - matrix * X
+
+print(R)
+
+# endregion Check the results
