@@ -16,7 +16,7 @@ X = [0] * n
 # endregion Starting Values
 
 # copy matrix to create extended matrix
-extendedMatrix = matrix.copy()
+extendedMatrix = list(map(list, matrix))
 
 # region Prints
 
@@ -80,6 +80,8 @@ while RPCounter < len(rightPart):
     extendedMatrix[RPCounter].append(rightPart[RPCounter])
     RPCounter += 1
 
+PrintStartMatrix()
+
 # region Getting rows and columns
 rows = len(matrix)
 columns = len(matrix)
@@ -127,12 +129,19 @@ for i in range(rows-1, -1, -1):
     X[i] = round(finalElement,6)
 
 PrintExtendedMatrix()
+PrintStartMatrix()
 PrintX()
 
 # region Check the results
 
-# R = rightPart - matrix * X
+def MultiplyMatrices(firstMatrix,secondMatrix):
+    for x in len(firstMatrix):
+        for y in len(secondMatrix):
+            print()
 
-# print(R)
+#R = rightPart - matrix * X
+
+print(len(matrix[0]))
+print(len(X))
 
 # endregion Check the results
