@@ -131,8 +131,8 @@ PrintX()
 
 # region Check the results
 
-R = rightPart - matrix * X
+# R = rightPart - matrix * X
 
-print(R)
+# print(R)
 
 # endregion Check the results
