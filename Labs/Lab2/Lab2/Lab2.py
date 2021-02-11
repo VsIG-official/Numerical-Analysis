@@ -12,42 +12,59 @@ onesDiagonal = True
 n = len(matrix)
 X = [0] * n
 
-# just printing
-def PrintAll():
-    PrintStartMatrix()
-
-    #PrintParametrs()
-
-    #PrintExtendedMatrix()
-
-    #PrintX()
+# copy matrix to create extended matrix
+extendedMatrix = matrix.copy()
 
 # Print X vector
 def PrintX():
-    print("X vector = ", X)
+    print("X vector = ")
+    for i in X:
+        print(i, end = ' ')
+    print()
 
+# print starting matrix
 def PrintStartMatrix():
     print("Start matrix =")
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row])
-      for row in matrix]))
+    for i in matrix:
+        for j in i:
+            print(j, end=" ")
+        print()
 
-# Print extended matrix
+# print right part
+def PrintRightPart():
+    print("Right part of matrix =")
+    for i in rightPart:
+        print(i, end = ' ')
+    print()
+
+# print extended matrix
 def PrintExtendedMatrix():
     print("Extended Matrix =")
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row])
-      for row in extendedMatrix]))
+    for i in extendedMatrix:
+        for j in i:
+            print(j, end=" ")
+        print()
 
+# print additional parametrs
 def PrintParametrs():
     print("Rows =", rows)
     print("Columns =", columns)
     print("n =", n)
 
-#PrintAll()
+# just printing
+def PrintAll():
+    PrintStartMatrix()
 
-# copy matrix to create extended matrix
-extendedMatrix = matrix.copy()
+    PrintRightPart()
 
-#PrintAll()
+    PrintParametrs()
+
+    PrintExtendedMatrix()
+
+    PrintX()
+
+PrintStartMatrix()
+PrintRightPart()
 
 # add right part to main matrix
 RPCounter = 0
@@ -55,11 +72,9 @@ while RPCounter < len(rightPart):
     extendedMatrix[RPCounter].append(rightPart[RPCounter])
     RPCounter += 1
 
-#PrintAll()
-
 # getting rows and columns
-rows = n
-columns = n
+rows = len(matrix)
+columns = len(matrix)
 
 extendedRows = len(extendedMatrix)
 extendedColumns = len(extendedMatrix)+1
@@ -101,14 +116,10 @@ print(extendedMatrix)
 for i in range(rows-1, -1, -1):
     element = extendedMatrix[i][extendedColumns-1]
     for j in range(i+1, extendedColumns-1):
-        print("elem",element)
         element -= extendedMatrix[i][j] * X[j]
     finalElement = element / extendedMatrix[i][i]
-    print("fin",finalElement)
     X[i] = round(finalElement,6)
 
 print(extendedMatrix)
 
-
-#print(extendedMatrix)
 print(X)
