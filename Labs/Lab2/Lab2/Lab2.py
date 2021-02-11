@@ -1,5 +1,6 @@
 
-# starting values
+# region Starting Values
+
 matrix = [[3,-2,5,0],
           [4,5,8,1],
           [1,1,2,1],
@@ -12,19 +13,23 @@ onesDiagonal = True
 n = len(matrix)
 X = [0] * n
 
+# endregion Starting Values
+
 # copy matrix to create extended matrix
 extendedMatrix = matrix.copy()
 
+# region Prints
+
 # Print X vector
 def PrintX():
-    print("X vector = ")
+    print("\nX vector = ")
     for i in X:
         print(i, end = ' ')
     print()
 
 # print starting matrix
 def PrintStartMatrix():
-    print("Start matrix =")
+    print("\nStart matrix =")
     for i in matrix:
         for j in i:
             print(j, end=" ")
@@ -32,14 +37,14 @@ def PrintStartMatrix():
 
 # print right part
 def PrintRightPart():
-    print("Right part of matrix =")
+    print("\nRight part of matrix =")
     for i in rightPart:
         print(i, end = ' ')
     print()
 
 # print extended matrix
 def PrintExtendedMatrix():
-    print("Extended Matrix =")
+    print("\nExtended Matrix =")
     for i in extendedMatrix:
         for j in i:
             print(j, end=" ")
@@ -47,7 +52,7 @@ def PrintExtendedMatrix():
 
 # print additional parametrs
 def PrintParametrs():
-    print("Rows =", rows)
+    print("\nRows =", rows)
     print("Columns =", columns)
     print("n =", n)
 
@@ -63,8 +68,11 @@ def PrintAll():
 
     PrintX()
 
+# endregion Prints
+
 PrintStartMatrix()
 PrintRightPart()
+PrintX()
 
 # add right part to main matrix
 RPCounter = 0
@@ -72,14 +80,14 @@ while RPCounter < len(rightPart):
     extendedMatrix[RPCounter].append(rightPart[RPCounter])
     RPCounter += 1
 
-# getting rows and columns
+# region Getting rows and columns
 rows = len(matrix)
 columns = len(matrix)
 
 extendedRows = len(extendedMatrix)
 extendedColumns = len(extendedMatrix)+1
 
-#PrintAll()
+# endregion Getting rows and columns
 
 # Iterating through matrix
 # Forward Elimination
@@ -95,7 +103,7 @@ for i in range(rows):
         for k in range(i,extendedColumns):
            extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
 
-print(extendedMatrix)
+PrintExtendedMatrix()
 
 # Do Row Echelon
 if onesDiagonal == True:
@@ -109,8 +117,6 @@ if onesDiagonal == True:
                 for k in range(i,extendedColumns):
                     extendedMatrix[j][k] = extendedMatrix[j][k] * multiplier
 
-print(extendedMatrix)
-
 # Search for X
 # Back-substitution
 for i in range(rows-1, -1, -1):
@@ -120,6 +126,5 @@ for i in range(rows-1, -1, -1):
     finalElement = element / extendedMatrix[i][i]
     X[i] = round(finalElement,6)
 
-print(extendedMatrix)
-
-print(X)
+PrintExtendedMatrix()
+PrintX()
