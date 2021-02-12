@@ -134,13 +134,18 @@ PrintX()
 
 # region Check the results
 
-multiplied = np.multiply(X,matrix)
-
-#R = rightPart - matrix * X
+multiplied = np.dot(matrix,X)
 
 print(multiplied)
 
-#R = np.subtract(rightPart,multiplied)
+#npRightPart=np.asarray(rightPart)
+#print(rightPart)
+
+print(rightPart)
+
+R = np.matrix(np.subtract(rightPart,multiplied),np.float16)
+
+print(R)
 
 # endregion Check the results
 
