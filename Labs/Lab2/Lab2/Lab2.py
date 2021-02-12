@@ -12,6 +12,7 @@ onesDiagonal = True
 
 n = len(matrix)
 X = [0] * n
+r = X.copy()
 
 # endregion Starting Values
 
@@ -70,17 +71,11 @@ def PrintAll():
 
 # endregion Prints
 
-PrintStartMatrix()
-PrintRightPart()
-PrintX()
-
 # add right part to main matrix
 RPCounter = 0
 while RPCounter < len(rightPart):
     extendedMatrix[RPCounter].append(rightPart[RPCounter])
     RPCounter += 1
-
-PrintStartMatrix()
 
 # region Getting rows and columns
 rows = len(matrix)
@@ -90,6 +85,8 @@ extendedRows = len(extendedMatrix)
 extendedColumns = len(extendedMatrix)+1
 
 # endregion Getting rows and columns
+
+PrintAll()
 
 # Iterating through matrix
 # Forward Elimination without Row Echelon
@@ -133,15 +130,16 @@ PrintStartMatrix()
 PrintX()
 
 # region Check the results
-
-def MultiplyMatrices(firstMatrix,secondMatrix):
-    for x in len(firstMatrix):
-        for y in len(secondMatrix):
-            print()
+for i in range(rows):
+    for j in range(columns[0]):
+        for k in range(columns):
+            #print(X[i][j])
+            r[i][j] = r[i][j] + matrix[i][k] * X[k][j]
 
 #R = rightPart - matrix * X
 
-print(len(matrix[0]))
-print(len(X))
+print(r)
+#print(len(matrix[0]))
+#print(len(X))
 
 # endregion Check the results
