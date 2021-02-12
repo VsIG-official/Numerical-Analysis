@@ -138,12 +138,9 @@ multiplied = np.dot(matrix,X)
 
 print(multiplied)
 
-#npRightPart=np.asarray(rightPart)
-#print(rightPart)
+R = np.subtract(rightPart,multiplied)
 
-print(rightPart)
-
-R = np.matrix(np.subtract(rightPart,multiplied),np.float16)
+np.set_printoptions(suppress=True)
 
 print(R)
 
