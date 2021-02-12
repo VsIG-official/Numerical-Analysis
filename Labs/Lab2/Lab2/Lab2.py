@@ -1,4 +1,7 @@
 
+# need for multiplicating matrices in the end
+import numpy as np
+
 # region Starting Values
 
 matrix = [[3,-2,5,0],
@@ -130,16 +133,16 @@ PrintStartMatrix()
 PrintX()
 
 # region Check the results
-for i in range(rows):
-    for j in range(columns[0]):
-        for k in range(columns):
-            #print(X[i][j])
-            r[i][j] = r[i][j] + matrix[i][k] * X[k][j]
+
+multiplied = np.multiply(X,matrix)
 
 #R = rightPart - matrix * X
 
-print(r)
-#print(len(matrix[0]))
-#print(len(X))
+print(multiplied)
+
+#R = np.subtract(rightPart,multiplied)
 
 # endregion Check the results
+
+#PrintStartMatrix()
+#PrintX()
