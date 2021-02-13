@@ -15,6 +15,7 @@ onesDiagonal = True
 
 n = len(matrix)
 X = [0] * n
+rounding = 6
 
 # endregion Starting Values
 
@@ -56,8 +57,6 @@ def PrintAll():
 
     PrintMatrix("Extended Matrix",extendedMatrix)
 
-    PrintVector("X",X)
-
 # endregion Prints
 
 # add right part to main matrix
@@ -90,11 +89,11 @@ for i in range(rows):
         multiplier = topElement / bottomElement
 
         for k in range(i,extendedColumns):
-           extendedMatrix[j][k] = extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier)
+           extendedMatrix[j][k] = round(extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier), rounding)
 
 PrintMatrix("Extended Matrix",extendedMatrix)
 
-# Do Row Echelon
+# Make Row Echelon Form
 if onesDiagonal == True:
     for i in range(n):
         for j in range(n):
@@ -104,7 +103,7 @@ if onesDiagonal == True:
                 bottomElement = extendedMatrix[j][i]
                 multiplier = topElement / bottomElement
                 for k in range(i,extendedColumns):
-                    extendedMatrix[j][k] = extendedMatrix[j][k] * multiplier
+                    extendedMatrix[j][k] = round(extendedMatrix[j][k] * multiplier, rounding)
 
 # Search for X
 # Back-Substitution
@@ -113,7 +112,7 @@ for i in range(rows-1, -1, -1):
     for j in range(i+1, extendedColumns-1):
         element -= extendedMatrix[i][j] * X[j]
     finalElement = element / extendedMatrix[i][i]
-    X[i] = round(finalElement,6)
+    X[i] = round(finalElement, rounding)
 
 PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
 PrintVector("X",X)
@@ -122,13 +121,14 @@ PrintVector("X",X)
 
 multiplied = np.dot(matrix,X)
 
-print(multiplied)
+print("Matrix multipled by X =\n",multiplied)
+#PrintVector("Matrix multipled by X",multiplied)
 
 R = np.subtract(rightPart,multiplied)
 
 np.set_printoptions(suppress=True)
 
-print(R)
+print("R =\n",R)
 
 # endregion Check the results
 
