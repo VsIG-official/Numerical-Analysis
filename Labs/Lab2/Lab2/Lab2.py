@@ -23,47 +23,40 @@ extendedMatrix = list(map(list, matrix))
 
 # region Prints
 
-# Print X vector
-def PrintX():
-    print("\nX vector = ")
-    for i in X:
+# Print vector
+def PrintVector(vectorName,vector):
+    print("\n",vectorName,"=")
+    for i in vector:
         print(i, end = ' ')
     print()
 
-# print starting matrix
+# print matrix
 def PrintMatrix(matrixName,matrix):
-    print("\n",matrixName," =")
+    print("\n",matrixName,"=")
     for i in matrix:
         for j in i:
             print(j, end=" ")
         print()
 
-# print right part
-def PrintRightPart():
-    print("\nRight part of matrix =")
-    for i in rightPart:
-        print(i, end = ' ')
-    print()
-
 # print additional parametrs
 def PrintParametrs():
-    print("\nRows =", rows)
-    print("Columns =", columns)
-    print("Exteneded Rows =", extendedRows)
-    print("Exteneded Columns =", extendedColumns)
-    print("n =", n)
+    print("\n Rows =", rows)
+    print(" Columns =", columns)
+    print(" Exteneded Rows =", extendedRows)
+    print(" Exteneded Columns =", extendedColumns)
+    print(" n =", n)
 
 # just printing
 def PrintAll():
     PrintMatrix("Start Matrix",matrix)
 
-    PrintRightPart()
+    PrintVector("Right Part", rightPart)
 
     PrintParametrs()
 
     PrintMatrix("Extended Matrix",extendedMatrix)
 
-    PrintX()
+    PrintVector("X",X)
 
 # endregion Prints
 
@@ -122,8 +115,8 @@ for i in range(rows-1, -1, -1):
     finalElement = element / extendedMatrix[i][i]
     X[i] = round(finalElement,6)
 
-PrintMatrix("Extended Matrix",extendedMatrix)
-PrintX()
+PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
+PrintVector("X",X)
 
 # region Check the results
 
