@@ -122,7 +122,6 @@ PrintVector("X",X)
 multiplied = np.dot(matrix,X)
 
 print("Matrix multipled by X =\n",multiplied)
-#PrintVector("Matrix multipled by X",multiplied)
 
 R = np.subtract(rightPart,multiplied)
 
@@ -131,4 +130,3 @@ np.set_printoptions(suppress=True)
 print("R =\n",R)
 
 # endregion Check the results
-
