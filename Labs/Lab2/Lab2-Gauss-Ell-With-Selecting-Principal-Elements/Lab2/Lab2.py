@@ -4,12 +4,12 @@ import numpy as np
 
 # region Starting Values
 
-matrix = [[3,-2,5,0],
-          [4,5,8,1],
-          [1,1,2,1],
-          [2,7,6,5]]
+matrix = [[8.30, 3.42, 4.10, 1.90],
+          [3.92, 8.45, 7.98, 2.46],
+          [3.77, 8.01, 8.04, 2.28],
+          [2.21, 2.85, 1.69, 6.99]]
 
-rightPart = [2,4,5,7]
+rightPart =[-9.85, 12.21, 14.65, -8.35]
 
 onesDiagonal = True
 
@@ -119,11 +119,11 @@ PrintVector("X",X)
 
 # region Check the results
 
-multiplied = np.dot(matrix,X)
+multiplied = np.round(np.dot(matrix,X),rounding)
 
 print("Matrix multipled by X =\n",multiplied)
 
-R = np.subtract(rightPart,multiplied)
+R = np.round(np.subtract(rightPart,multiplied),rounding)
 
 np.set_printoptions(suppress=True)
 
