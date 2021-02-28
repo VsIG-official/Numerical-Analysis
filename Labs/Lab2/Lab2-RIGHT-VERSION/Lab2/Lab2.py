@@ -82,31 +82,22 @@ tempMatrix = list(map(list, extendedMatrix))
 # Forward Elimination without Row Echelon
 for i in range(rows):
     for j in range(i+1,columns):
+        # Getting max number
         maxNum = [max(k, key=abs) for k in zip(*tempMatrix)][0]
 
         columnArray = [sub[i] for sub in extendedMatrix]
 
         maxNumIndex = columnArray.index(maxNum)
 
+        # Swapping rows
         firstTempRow = extendedMatrix[:][i]
 
         rowToChange = extendedMatrix[:][maxNumIndex]
 
-        extendedMatrix[:][i] = rowToChange
-        extendedMatrix[:][maxNumIndex] = firstTempRow
+        extendedMatrix[i] = rowToChange
+        extendedMatrix[maxNumIndex] = firstTempRow
 
-    tempMatrix = list(map(list, extendedMatrix))
-
-    for z in range(i+1):
-        for m in tempMatrix:
-            del m[0]
-    for z in range(i+1):
-        del tempMatrix[0]
-
-    PrintMatrix("Extended Matrix",extendedMatrix)
-
-for i in range(rows):
-    for j in range(i+1,columns):
+        # Doing triangular matrix
         if matrix[j][i] == 0:continue
         topElement = extendedMatrix[i][i]
         bottomElement = extendedMatrix[j][i]
@@ -115,6 +106,19 @@ for i in range(rows):
 
         for k in range(i,extendedColumns):
            extendedMatrix[j][k] = round(extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier), rounding)
+
+    PrintMatrix("Extended Matrix ",extendedMatrix)
+
+    # Creating temp matrix for correct numbers and indexes
+    tempMatrix = list(map(list, extendedMatrix))
+
+    for z in range(i+1):
+        for m in tempMatrix:
+            del m[0]
+    for z in range(i+1):
+        del tempMatrix[0]
+
+PrintMatrix("Extended Matrix ",extendedMatrix)
 
 # Make Row Echelon Form
 if onesDiagonal == True:
@@ -127,6 +131,7 @@ if onesDiagonal == True:
                 multiplier = topElement / bottomElement
                 for k in range(i,extendedColumns):
                     extendedMatrix[j][k] = round(extendedMatrix[j][k] * multiplier, rounding)
+    PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
 
 # Search for X
 # Back-Substitution
@@ -137,8 +142,8 @@ for i in range(rows-1, -1, -1):
     finalElement = element / extendedMatrix[i][i]
     X[i] = round(finalElement, rounding)
 
-PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
 PrintVector("X",X)
+PrintMatrix("Extended Matrix",extendedMatrix)
 
 # region Check the results
 
