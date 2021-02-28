@@ -81,10 +81,27 @@ PrintAll()
 # Forward Elimination without Row Echelon
 for i in range(rows):
     for j in range(i+1,columns):
-        res = [max(k, key=abs) for k in zip(*extendedMatrix)][i]
-        print(res)
-        newRes = extendedMatrix[i].index(res)
-        print(newRes)
+        maxNum = [max(k, key=abs) for k in zip(*extendedMatrix)][i]
+        print("maxNum=",maxNum)
+        maxNumIndex = extendedMatrix[i].index(maxNum)
+        print("maxNumIndex=",maxNumIndex)
+        firstTempRow = extendedMatrix[:][i]
+        print("firstTempRow=",firstTempRow)
+        rowToChange = extendedMatrix[:][maxNumIndex]
+        print("rowToChange=",firstTempRow)
+        extendedMatrix[:][i] = rowToChange
+        extendedMatrix[:][maxNumIndex] = firstTempRow
+
+        if matrix[j][i] == 0:continue
+        topElement = extendedMatrix[i][i]
+        bottomElement = extendedMatrix[j][i]
+
+        multiplier = topElement / bottomElement
+
+        for k in range(i,extendedColumns):
+           extendedMatrix[j][k] = round(extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier), rounding)
+
+        PrintMatrix("Extended Matrix",extendedMatrix)
 
 ## Make Row Echelon Form
 #if onesDiagonal == True:
