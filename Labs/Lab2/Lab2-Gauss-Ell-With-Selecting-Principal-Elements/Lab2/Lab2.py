@@ -81,52 +81,45 @@ PrintAll()
 # Forward Elimination without Row Echelon
 for i in range(rows):
     for j in range(i+1,columns):
+        res = [max(k, key=abs) for k in zip(*extendedMatrix)][i]
+        print(res)
+        newRes = extendedMatrix[i].index(res)
+        print(newRes)
 
-        if matrix[j][i] == 0:continue
-        topElement = extendedMatrix[i][i]
-        bottomElement = extendedMatrix[j][i]
+## Make Row Echelon Form
+#if onesDiagonal == True:
+#    for i in range(n):
+#        for j in range(n):
+#            if i == j:
+#                if matrix[j][i] == 0:continue
+#                topElement = 1
+#                bottomElement = extendedMatrix[j][i]
+#                multiplier = topElement / bottomElement
+#                for k in range(i,extendedColumns):
+#                    extendedMatrix[j][k] = round(extendedMatrix[j][k] * multiplier, rounding)
 
-        multiplier = topElement / bottomElement
+## Search for X
+## Back-Substitution
+#for i in range(rows-1, -1, -1):
+#    element = extendedMatrix[i][extendedColumns-1]
+#    for j in range(i+1, extendedColumns-1):
+#        element -= extendedMatrix[i][j] * X[j]
+#    finalElement = element / extendedMatrix[i][i]
+#    X[i] = round(finalElement, rounding)
 
-        for k in range(i,extendedColumns):
-           extendedMatrix[j][k] = round(extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier), rounding)
+#PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
+#PrintVector("X",X)
 
-PrintMatrix("Extended Matrix",extendedMatrix)
+## region Check the results
 
-# Make Row Echelon Form
-if onesDiagonal == True:
-    for i in range(n):
-        for j in range(n):
-            if i == j:
-                if matrix[j][i] == 0:continue
-                topElement = 1
-                bottomElement = extendedMatrix[j][i]
-                multiplier = topElement / bottomElement
-                for k in range(i,extendedColumns):
-                    extendedMatrix[j][k] = round(extendedMatrix[j][k] * multiplier, rounding)
+#multiplied = np.round(np.dot(matrix,X),rounding)
 
-# Search for X
-# Back-Substitution
-for i in range(rows-1, -1, -1):
-    element = extendedMatrix[i][extendedColumns-1]
-    for j in range(i+1, extendedColumns-1):
-        element -= extendedMatrix[i][j] * X[j]
-    finalElement = element / extendedMatrix[i][i]
-    X[i] = round(finalElement, rounding)
+#print("Matrix multipled by X =\n",multiplied)
 
-PrintMatrix("Extended Matrix In Row Echelon form",extendedMatrix)
-PrintVector("X",X)
+#R = np.round(np.subtract(rightPart,multiplied),rounding)
 
-# region Check the results
+#np.set_printoptions(suppress=True)
 
-multiplied = np.round(np.dot(matrix,X),rounding)
+#print("R =\n",R)
 
-print("Matrix multipled by X =\n",multiplied)
-
-R = np.round(np.subtract(rightPart,multiplied),rounding)
-
-np.set_printoptions(suppress=True)
-
-print("R =\n",R)
-
-# endregion Check the results
+## endregion Check the results
