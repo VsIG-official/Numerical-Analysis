@@ -11,7 +11,7 @@ matrix = [[8.30, 3.42, 4.10, 1.90],
 
 rightPart =[-9.85, 12.21, 14.65, -8.35]
 
-onesDiagonal = False
+onesDiagonal = True
 
 n = len(matrix)
 X = [0] * n
