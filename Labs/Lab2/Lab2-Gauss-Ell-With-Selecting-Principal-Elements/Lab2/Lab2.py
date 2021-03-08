@@ -1,4 +1,3 @@
-
 # need for multiplicating matrices in the end
 import numpy as np
 
