@@ -1,4 +1,8 @@
 
+# need for multiplicating matrices in the end
+import numpy as np
+np.set_printoptions(suppress=True)
+
 matrix = [[3.81, 0.25, 1.28, 2.75],
           [2.25, 1.32, 6.58, 0.49],
           [5.31, 8.28, 0.98, 1.04],
@@ -21,7 +25,7 @@ extendedMatrix = list(map(list, matrix))
 def PrintVector(vectorName,vector):
     print("\n",vectorName,"=")
     for i in vector:
-        print(i, end = ' ')
+        print(i, end = " \t")
     print()
 
 # print matrix
@@ -29,7 +33,9 @@ def PrintMatrix(matrixName,matrix):
     print("\n",matrixName,"=")
     for i in matrix:
         for j in i:
-            print(j, end=" ")
+            print(j, end=" \t")
+            if len(str(j)) <= 5:
+                print(end=" \t")
         print()
 
 # print additional parametrs
@@ -70,20 +76,48 @@ extendedColumns = len(extendedMatrix)+1
 
 PrintAll()
 
+tempMatrix = list(map(list, extendedMatrix))
 
+# Iterating through matrix
+# Forward Elimination without Row Echelon
+for i in range(1):
+    for j in range(1,rows):
+        # Getting max number
+        maxNum = [max(k, key=abs) for k in zip(*tempMatrix)][0]
 
+        columnArray = [sub[i] for sub in extendedMatrix]
+
+        maxNumIndex = columnArray.index(maxNum)
+
+        # Swapping rows
+        firstTempRow = extendedMatrix[:][i]
+
+        rowToChange = extendedMatrix[:][maxNumIndex]
+
+        extendedMatrix[i] = rowToChange
+        extendedMatrix[maxNumIndex] = firstTempRow
+
+        # Doing triangular matrix
+        if matrix[j][i] == 0:continue
+        topElement = extendedMatrix[i][i]
+        bottomElement = extendedMatrix[j][i]
+
+        multiplier = topElement / bottomElement
+
+        for k in range(i,extendedColumns):
+           extendedMatrix[j][k] = round(extendedMatrix[i][k] - (extendedMatrix[j][k] * multiplier), rounding)
+
+    PrintMatrix("Extended Matrix ",extendedMatrix)
 
 
 # region Check the results
 
-multiplied = np.round(np.dot(matrix,X),rounding)
+# multiplied = np.round(np.dot(matrix,X),rounding)
 
-print("Matrix multipled by X =\n",multiplied)
+# print("Matrix multipled by X =\n",multiplied)
 
-R = np.round(np.subtract(rightPart,multiplied),rounding)
+# R = np.round(np.subtract(rightPart,multiplied),rounding)
 
-np.set_printoptions(suppress=True)
-
-print("R =\n",R)
+# print("R =\n",R)
 
 # endregion Check the results
