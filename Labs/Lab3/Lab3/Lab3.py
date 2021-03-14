@@ -18,6 +18,7 @@ matrixDiagonal =    [[15.2, 4.63, 2.7, 5.03],
 rightPartDiagonal = [16.69, 8.47, 2.38, 0.026518]
 
 n = len(matrixDiagonal)
+zeros = [0] * n
 X = [0] * n
 rounding = 6
 
@@ -68,7 +69,7 @@ def PrintAll():
 # add right part to main matrix
 RPCounter = 0
 while RPCounter < len(rightPartDiagonal):
-    extendedMatrixDiagonal[RPCounter].append(rightPartDiagonal[RPCounter])
+    extendedMatrix[RPCounter].append(rightPartDiagonal[RPCounter])
     RPCounter += 1
 
 # region Getting rows and columns
@@ -76,16 +77,27 @@ while RPCounter < len(rightPartDiagonal):
 rows = len(matrixDiagonal)
 columns = len(matrixDiagonal)
 
-extendedRows = len(extendedMatrixDiagonal)
-extendedColumns = len(extendedMatrixDiagonal)+1
+extendedRows = len(extendedMatrix)
+extendedColumns = len(extendedMatrix)+1
 
 # endregion Getting rows and columns
 
 PrintAll()
 
+for i in range(0, 25):
+    # for loop for 3 times as to calculate x, y , z
+    for j in range(0, n):
+        # temp variable d to store b[j]
+        tempVar = rightPartDiagonal[j]
 
-
-
+        # to calculate respective xi, yi, zi
+        for i in range(0, n):
+            if(j != i):
+                tempVar=tempVar-(matrixDiagonal[j][i] * X[i])
+        # updating the value of our solution
+        X[j] = tempVar / matrixDiagonal[j][j]
+    print(X)
+    # returning our updated solution
 
 # region Check the results
 
