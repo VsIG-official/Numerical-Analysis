@@ -18,9 +18,12 @@ matrixDiagonal =    [[15.2, 4.63, 2.7, 5.03],
 rightPartDiagonal = [16.69, 8.47, 2.38, 0.026518]
 
 N = len(matrixDiagonal)
-zeros = [0] * N
+difference = [0] * N
 X = [0] * N
 rounding = 6
+residualToShow = 3
+doOperations = True
+epsilon = 0.000001
 
 # endregion Starting Values
 
@@ -66,6 +69,18 @@ def PrintAll():
 
 # endregion Prints
 
+# region Check the results
+def Residual():
+    multiplied = np.round(np.dot(matrixDiagonal,X),rounding)
+
+    # print("Matrix multipled by X =\n",multiplied)
+
+    R = np.round(np.subtract(rightPartDiagonal,multiplied),rounding)
+
+    print("R =\n",R)
+
+# endregion Check the results
+
 # add right part to main matrix
 RPCounter = 0
 while RPCounter < len(rightPartDiagonal):
@@ -84,29 +99,28 @@ extendedColumns = len(extendedMatrix)+1
 
 PrintAll()
 
-for i in range(0, 25):
-    # for loop for 3 times as to calculate x, y , z
+iterations = 0
+
+while doOperations:
     for j in range(0, N):
-        # temp variable d to store b[j]
+        if iterations < residualToShow:
+            Residual()
+
+        tempX = X
+        for x in range(N):
+            difference[x] = abs(tempX[x] - X[x])
+            if max(difference) < epsilon:
+                doOperations = False
+        # temporal variable to store rightPart element
         tempVar = rightPartDiagonal[j]
 
-        # to calculate respective xi, yi, zi
-        for i in range(0, N):
-            if(j != i):
-                tempVar=tempVar-(matrixDiagonal[j][i] * X[i])
-        # updating the value of our solution
-        X[j] = tempVar / matrixDiagonal[j][j]
+        # calculate every element in array
+        for k in range(0, N):
+            if(j != k):
+                tempVar = tempVar-(matrixDiagonal[j][k] * X[k])
+        iterations = iterations + 1
+        # create new value
+        X[j] = round(tempVar / matrixDiagonal[j][j], rounding)
     print(X)
-    # returning our updated solution
 
-# region Check the results
-
-# multiplied = np.round(np.dot(matrixDiagonal,X),rounding)
-
-# print("Matrix multipled by X =\n",multiplied)
-
-# R = np.round(np.subtract(rightPartDiagonal,multiplied),rounding)
-
-# print("R =\n",R)
-
-# endregion Check the results
+Residual()
