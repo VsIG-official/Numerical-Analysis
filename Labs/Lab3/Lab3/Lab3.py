@@ -23,7 +23,8 @@ X = [0] * N
 rounding = 6
 residualToShow = 3
 doOperations = True
-epsilon = 0.000001
+epsilonValue = 0.000001 # 10^(-6)
+iterations = 0
 
 # endregion Starting Values
 
@@ -99,28 +100,29 @@ extendedColumns = len(extendedMatrix)+1
 
 PrintAll()
 
-iterations = 0
-
 while doOperations:
+#for i in range(0, 12):
+    tempX = X.copy()
     for j in range(0, N):
-        if iterations < residualToShow:
-            Residual()
 
-        tempX = X
-        for x in range(N):
-            difference[x] = abs(tempX[x] - X[x])
-            if max(difference) < epsilon:
-                doOperations = False
-        # temporal variable to store rightPart element
+        #temporal variable to store rightPart element
         tempVar = rightPartDiagonal[j]
 
         # calculate every element in array
         for k in range(0, N):
             if(j != k):
-                tempVar = tempVar-(matrixDiagonal[j][k] * X[k])
-        iterations = iterations + 1
+                tempVar = tempVar  - (matrixDiagonal[j][k] * X[k])
         # create new value
         X[j] = round(tempVar / matrixDiagonal[j][j], rounding)
-    print(X)
 
-Residual()
+    for x in range(N):
+        difference[x] = abs(tempX[x] - X[x])
+        if max(difference) < epsilonValue:
+            doOperations = False
+
+    if iterations < residualToShow:
+        PrintVector("X", X)
+    iterations = iterations + 1
+    Residual()
+
+print("Total iterations = ", iterations)
