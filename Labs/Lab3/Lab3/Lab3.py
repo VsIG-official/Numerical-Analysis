@@ -17,9 +17,9 @@ matrixDiagonal =    [[15.2, 4.63, 2.7, 5.03],
 
 rightPartDiagonal = [16.69, 8.47, 2.38, 0.026518]
 
-n = len(matrixDiagonal)
-zeros = [0] * n
-X = [0] * n
+N = len(matrixDiagonal)
+zeros = [0] * N
+X = [0] * N
 rounding = 6
 
 # endregion Starting Values
@@ -52,7 +52,7 @@ def PrintParametrs():
     print(" Columns =", columns)
     print(" Exteneded Rows =", extendedRows)
     print(" Exteneded Columns =", extendedColumns)
-    print(" n =", n)
+    print(" n =", N)
 
 # just printing
 def PrintAll():
@@ -86,12 +86,12 @@ PrintAll()
 
 for i in range(0, 25):
     # for loop for 3 times as to calculate x, y , z
-    for j in range(0, n):
+    for j in range(0, N):
         # temp variable d to store b[j]
         tempVar = rightPartDiagonal[j]
 
         # to calculate respective xi, yi, zi
-        for i in range(0, n):
+        for i in range(0, N):
             if(j != i):
                 tempVar=tempVar-(matrixDiagonal[j][i] * X[i])
         # updating the value of our solution
