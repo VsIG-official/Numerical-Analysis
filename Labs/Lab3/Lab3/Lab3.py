@@ -115,14 +115,17 @@ while doOperations:
         # create new value
         X[j] = round(tempVar / matrixDiagonal[j][j], rounding)
 
+    # compare two vectors
     for x in range(N):
         difference[x] = abs(tempX[x] - X[x])
         if max(difference) < epsilonValue:
             doOperations = False
 
+    # show first three iterations of vector X
     if iterations < residualToShow:
         PrintVector("X", X)
     iterations = iterations + 1
     Residual()
 
+PrintVector("X", X)
 print("Total iterations = ", iterations)
