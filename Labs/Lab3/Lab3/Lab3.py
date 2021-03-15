@@ -1,4 +1,4 @@
-
+# region Starting Values
 # need for multiplicating matrices in the end
 import numpy as np
 np.set_printoptions(suppress=True)
@@ -74,8 +74,6 @@ def PrintAll():
 def Residual():
     multiplied = np.round(np.dot(matrixDiagonal,X),rounding)
 
-    # print("Matrix multipled by X =\n",multiplied)
-
     R = np.round(np.subtract(rightPartDiagonal,multiplied),rounding)
 
     print("R =\n",R)
@@ -101,23 +99,21 @@ extendedColumns = len(extendedMatrix)+1
 PrintAll()
 
 while doOperations:
-#for i in range(0, 12):
     tempX = X.copy()
-    for j in range(0, N):
-
+    for i in range(0, N):
         #temporal variable to store rightPart element
-        tempVar = rightPartDiagonal[j]
+        tempVar = rightPartDiagonal[i]
 
         # calculate every element in array
-        for k in range(0, N):
-            if(j != k):
-                tempVar = tempVar  - (matrixDiagonal[j][k] * X[k])
+        for j in range(0, N):
+            if(i != j):
+                tempVar = tempVar  - (matrixDiagonal[i][j] * X[j])
         # create new value
-        X[j] = round(tempVar / matrixDiagonal[j][j], rounding)
+        X[i] = round(tempVar / matrixDiagonal[i][i], rounding)
 
     # compare two vectors
-    for x in range(N):
-        difference[x] = abs(tempX[x] - X[x])
+    for k in range(N):
+        difference[k] = abs(tempX[k] - X[k])
         if max(difference) < epsilonValue:
             doOperations = False
 
