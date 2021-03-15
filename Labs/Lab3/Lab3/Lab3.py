@@ -21,7 +21,7 @@ N = len(matrixDiagonal)
 difference = [0] * N
 X = [0] * N
 rounding = 6
-residualToShow = 3
+vectorToShow = 3
 doOperations = True
 epsilonValue = 0.000001 # 10^(-6)
 iterations = 0
@@ -60,9 +60,9 @@ def PrintParametrs():
 
 # just printing
 def PrintAll():
-    PrintMatrix("Start Matrix",matrix)
+    PrintMatrix("Start Matrix",matrixDiagonal)
 
-    PrintVector("Right Part", rightPart)
+    PrintVector("Right Part", rightPartDiagonal)
 
     PrintParametrs()
 
@@ -100,16 +100,16 @@ PrintAll()
 
 while doOperations:
     tempX = X.copy()
-    for i in range(0, N):
+    for c in range(0, N):
         #temporal variable to store rightPart element
-        tempVar = rightPartDiagonal[i]
+        element  = rightPartDiagonal[c]
 
         # calculate every element in array
-        for j in range(0, N):
-            if(i != j):
-                tempVar = tempVar  - (matrixDiagonal[i][j] * X[j])
+        for z in range(0, N):
+            if(c != z):
+                element  = element - (matrixDiagonal[c][z] * X[z])
         # create new value
-        X[i] = round(tempVar / matrixDiagonal[i][i], rounding)
+        X[c] = round(element  / matrixDiagonal[c][c], rounding)
 
     # compare two vectors
     for k in range(N):
@@ -118,7 +118,7 @@ while doOperations:
             doOperations = False
 
     # show first three iterations of vector X
-    if iterations < residualToShow:
+    if iterations < vectorToShow:
         PrintVector("X", X)
     iterations = iterations + 1
     Residual()
