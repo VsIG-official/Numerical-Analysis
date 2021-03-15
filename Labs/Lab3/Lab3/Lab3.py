@@ -121,7 +121,10 @@ while doOperations:
     if iterations < vectorToShow:
         PrintVector("X", X)
     iterations = iterations + 1
-    Residual()
+    if doOperations == True:
+        Residual()
 
+print("\nFinal results:")
 PrintVector("X", X)
+Residual()
 print("Total iterations = ", iterations)
