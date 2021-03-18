@@ -121,7 +121,7 @@ while doOperations:
     if iterations < vectorToShow:
         PrintVector("X", X)
     iterations = iterations + 1
-    if doOperations == True:
+    if doOperations:
         Residual()
 
 print("\nFinal results:")
