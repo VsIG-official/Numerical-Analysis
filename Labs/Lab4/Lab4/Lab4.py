@@ -1,4 +1,3 @@
-
 # region Starting Values
 # need for multiplicating matrices in the end
 import numpy as np
@@ -9,16 +8,19 @@ matrix = [[3.81, 0.25, 1.28, 2.75],
           [5.31, 8.28, 0.98, 1.04],
           [11.39, 2.45, 3.35, 2.28]]
 
-N = len(matrixDiagonal)
-difference = [0] * N
-X = [0] * N
-rounding = 6
-vectorToShow = 3
-doOperations = True
-epsilonValue = 0.000001 # 10^(-6)
-iterations = 0
+N = len(matrix)
 
 # endregion Starting Values
+
+# region Identity
+
+def identity(n):
+    m=[[0 for x in range(n)] for y in range(n)]
+    for i in range(0,n):
+        m[i][i] = 1
+    return m
+
+# endregion Identity
 
 # region Prints
 
@@ -41,27 +43,16 @@ def PrintMatrix(matrixName,matrix):
 
 # print additional parametrs
 def PrintParametrs():
-    print("\n Rows =", rows)
-    print(" Columns =", columns)
-    print(" Exteneded Rows =", extendedRows)
-    print(" Exteneded Columns =", extendedColumns)
-    print(" n =", N)
+    print("\nN =", N)
 
 # just printing
 def PrintAll():
-    PrintMatrix("Start Matrix",matrixDiagonal)
-
-    PrintVector("Right Part", rightPartDiagonal)
+    PrintMatrix("Start Matrix",matrix)
 
     PrintParametrs()
 
 # endregion Prints
 
-# region Getting rows and columns
-
-rows = len(matrixDiagonal)
-columns = len(matrixDiagonal)
-
-# endregion Getting rows and columns
-
 PrintAll()
+
+idenMatrix = identity(N)
