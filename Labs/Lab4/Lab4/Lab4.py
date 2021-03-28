@@ -9,6 +9,7 @@ matrix = [[7.25, 0.98, 1.09, 1.105],
           [1.105, 0.16, 2.1, 5.11]]
 
 N = len(matrix)
+rounding = 6
 
 # endregion Starting Values
 
@@ -27,14 +28,13 @@ def identity(N):
 def dot(matrix1: list, matrix2: list, N: int) -> list:
     res = [[0 for x in range(N)] for y in range(N)]
 
-    # explicit for loops
     for i in range(len(matrix1)):
         for j in range(len(matrix2[0])):
             for k in range(len(matrix2)):
 
                 # resulted matrix
                 res[i][j] += matrix1[i][k] * matrix2[k][j]
-
+                res[i][j] = round(res[i][j], rounding)
     return res
 
 # endregion Dot
@@ -50,7 +50,7 @@ def PrintVector(vectorName,vector):
 
 # print matrix
 def PrintMatrix(matrixName,matrix):
-    print("\n",matrixName,"=")
+    print("\n", matrixName,"=")
     for i in matrix:
         for j in i:
             print(j, end=" \t")
@@ -64,7 +64,7 @@ def PrintParametrs():
 
 # just printing
 def PrintAll():
-    PrintMatrix("Start Matrix",matrix)
+    PrintMatrix("Start Matrix", matrix)
 
     PrintParametrs()
 
@@ -72,45 +72,27 @@ def PrintAll():
 
 PrintAll()
 
-from string import Template
-template = Template('#' * 10 + ' $string ' + '#' * 10)
+for i in range(N - 1, 0, -1):
+    matrix_b = identity(N)
 
-def main_part(matrix_a: list) -> None:
-    """
-    Get all functions in one place
-    :param matrix_a: start matrix
-    :return: nothing to return
-    """
-    normal_form = frobenius(matrix_a)
-    print(template.substitute(string='Frobenius form'))
-    print(normal_form)
+    matrix_b_minus = identity(N)
 
-def frobenius(matrix: list) -> list:
-    length = len(matrix)
-    s_matrix = identity(length)
-    for i in range(length - 1, 0, -1):
-        matrix_b = identity(length)
-        # copy matrix
-        matrix_b_minus = list(map(list, matrix_b))
+    # Fill matrix b and minus one b
+    for j in range(N):
+        if j == i - 1:
+            matrix_b[i - 1][j] = round(1 / matrix[i][i - 1], rounding)
+        else:
+            matrix_b[i - 1][j] = round(matrix[i][j] / matrix[i][i - 1] * (-1), rounding)
+        matrix_b_minus[i - 1][j] = round(matrix[i][j], rounding)
 
-        # Fill matrix b and minus one b
-        for j in range(length):
-            if j == i - 1:
-                matrix_b[i - 1][j] = 1 / matrix[i][i - 1]
-            else:
-                matrix_b[i - 1][j] = matrix[i][j] / matrix[i][i - 1] * (-1)
-            matrix_b_minus[i - 1][j] = matrix[i][j]
-        print(template.substitute(string=f'Step: {abs(i - length)}'))
-        print(template.substitute(string='Matrix b'))
-        print(matrix_b)
+    print("\nIteration -", N - i)
 
-        s_matrix = dot(s_matrix, matrix_b, N)
+    PrintMatrix("Matrix b", matrix_b)
 
-        PrintMatrix('Matrix b minus', matrix_b_minus)
+    PrintMatrix("Matrix b minus", matrix_b_minus)
 
-        matrix = dot(matrix_b_minus, dot(matrix, matrix_b, N), N)
+    matrix = dot(matrix_b_minus, dot(matrix, matrix_b, N), N)
 
-        PrintMatrix('Temporary result', matrix)
-    return matrix
+    PrintMatrix("Temporary result", matrix)
 
-main_part(matrix.copy())
+PrintMatrix("Final result as Frobenius Matrix", matrix)
