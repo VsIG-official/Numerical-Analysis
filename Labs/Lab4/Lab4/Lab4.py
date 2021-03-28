@@ -34,26 +34,18 @@ def dot(matrix1: list, matrix2: list, N: int) -> list:
 
                 # resulted matrix
                 res[i][j] += matrix1[i][k] * matrix2[k][j]
-                res[i][j] = round(res[i][j], rounding)
     return res
 
 # endregion Dot
 
 # region Prints
 
-# Print vector
-def PrintVector(vectorName,vector):
-    print("\n",vectorName,"=")
-    for i in vector:
-        print(i, end = " \t")
-    print()
-
 # print matrix
 def PrintMatrix(matrixName,matrix):
     print("\n", matrixName,"=")
     for i in matrix:
         for j in i:
-            print(j, end=" \t")
+            print(round(j, rounding), end=" \t")
             if len(str(j)) <= 5:
                 print(end=" \t")
         print()
@@ -80,10 +72,10 @@ for i in range(N - 1, 0, -1):
     # Fill matrix b and minus one b
     for j in range(N):
         if j == i - 1:
-            matrix_b[i - 1][j] = round(1 / matrix[i][i - 1], rounding)
+            matrix_b[i - 1][j] = 1 / matrix[i][i - 1]
         else:
-            matrix_b[i - 1][j] = round(matrix[i][j] / matrix[i][i - 1] * (-1), rounding)
-        matrix_b_minus[i - 1][j] = round(matrix[i][j], rounding)
+            matrix_b[i - 1][j] = matrix[i][j] / matrix[i][i - 1] * (-1)
+        matrix_b_minus[i - 1][j] = matrix[i][j]
 
     print("\nIteration -", N - i)
 
