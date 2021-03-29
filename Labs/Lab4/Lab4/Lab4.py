@@ -2,10 +2,12 @@
 import numpy as np
 np.set_printoptions(suppress=True)
 
-matrix = [[7.25, 0.98, 1.09, 1.105],
-          [0.98, 3.17, 1.3, 0.16],
-          [1.09, 1.3, 6.43, 2.1],
-          [1.105, 0.16, 2.1, 5.11]]
+matrix = [
+    [2.2, 1, 0.5, 2],
+    [1, 1.3, 2, 1],
+    [0.5, 2, 0.5, 1.6],
+    [2, 1, 1.6, 2]
+]
 
 N = len(matrix)
 rounding = 5
@@ -69,12 +71,13 @@ def PrintAll():
 
 PrintAll()
 
+S_matrix = identity(N)
+
 for x in range(N - 1, 0, -1):
     M_matrix = identity(N)
 
     M_matrixInverted = identity(N)
 
-    S_matrix = identity(N)
     # Fill matrix b and minus one b
     for y in range(N):
         if y == x - 1:
