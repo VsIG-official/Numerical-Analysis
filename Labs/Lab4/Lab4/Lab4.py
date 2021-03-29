@@ -9,7 +9,7 @@ matrix = [[7.25, 0.98, 1.09, 1.105],
           [1.105, 0.16, 2.1, 5.11]]
 
 N = len(matrix)
-rounding = 6
+rounding = 5
 
 # endregion Starting Values
 
@@ -46,9 +46,15 @@ def PrintMatrix(matrixName,matrix):
     for i in matrix:
         for j in i:
             print(round(j, rounding), end=" \t")
-            if len(str(j)) <= 5:
+            if len(str(j)) <= 6:
                 print(end=" \t")
         print()
+
+# print matrix
+def PrintMatrixAsNp(matrixName,matrix):
+    print("\n", matrixName,"=")
+    npMatrix = np.array(matrix)
+    print(npMatrix.round(rounding))
 
 # print additional parametrs
 def PrintParametrs():
@@ -79,12 +85,12 @@ for i in range(N - 1, 0, -1):
 
     print("\nIteration -", N - i)
 
-    PrintMatrix("Matrix b", matrix_b)
+    PrintMatrixAsNp("Matrix b", matrix_b)
 
-    PrintMatrix("Matrix b minus", matrix_b_minus)
+    PrintMatrixAsNp("Matrix b minus", matrix_b_minus)
 
     matrix = dot(matrix_b_minus, dot(matrix, matrix_b, N), N)
 
-    PrintMatrix("Temporary result", matrix)
+    PrintMatrixAsNp("Temporary result", matrix)
 
-PrintMatrix("Final result as Frobenius Matrix", matrix)
+PrintMatrixAsNp("Final result as Frobenius Matrix", matrix)
