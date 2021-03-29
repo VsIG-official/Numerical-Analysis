@@ -1,5 +1,4 @@
 # region Starting Values
-# need for multiplicating matrices in the end
 import numpy as np
 np.set_printoptions(suppress=True)
 
@@ -16,10 +15,10 @@ rounding = 5
 # region Identity
 
 def identity(N):
-    M = [[0 for x in range(N)] for y in range(N)]
+    matrixForIdentity = [[0 for x in range(N)] for y in range(N)]
     for i in range(0, N):
-        M[i][i] = 1
-    return M
+        matrixForIdentity[i][i] = 1
+    return matrixForIdentity
 
 # endregion Identity
 
@@ -70,26 +69,31 @@ def PrintAll():
 
 PrintAll()
 
-for i in range(N - 1, 0, -1):
-    matrix_b = identity(N)
+for x in range(N - 1, 0, -1):
+    M_matrix = identity(N)
 
-    matrix_b_minus = identity(N)
+    M_matrixInverted = identity(N)
 
+    S_matrix = identity(N)
     # Fill matrix b and minus one b
-    for j in range(N):
-        if j == i - 1:
-            matrix_b[i - 1][j] = 1 / matrix[i][i - 1]
+    for y in range(N):
+        if y == x - 1:
+            M_matrix[x - 1][y] = 1 / matrix[x][x - 1]
         else:
-            matrix_b[i - 1][j] = matrix[i][j] / matrix[i][i - 1] * (-1)
-        matrix_b_minus[i - 1][j] = matrix[i][j]
+            M_matrix[x - 1][y] = matrix[x][y] / matrix[x][x - 1] * (-1)
+        M_matrixInverted[x - 1][y] = matrix[x][y]
 
-    print("\nIteration -", N - i)
+    print("\nIteration -", N - x)
 
-    PrintMatrixAsNp("Matrix b", matrix_b)
+    PrintMatrixAsNp("M Matrix", M_matrix)
 
-    PrintMatrixAsNp("Matrix b minus", matrix_b_minus)
+    S_matrix = dot(S_matrix, M_matrix, N)
 
-    matrix = dot(matrix_b_minus, dot(matrix, matrix_b, N), N)
+    PrintMatrixAsNp("S Matrix", S_matrix)
+
+    PrintMatrixAsNp("M Matrix Inverted", M_matrixInverted)
+
+    matrix = dot(M_matrixInverted, dot(matrix, M_matrix, N), N)
 
     PrintMatrixAsNp("Temporary result", matrix)
 
