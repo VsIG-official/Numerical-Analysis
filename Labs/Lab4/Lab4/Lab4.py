@@ -16,7 +16,7 @@ rounding = 5
 
 # region Identity
 
-def identity(N):
+def Identity(N):
     matrixForIdentity = [[0 for x in range(N)] for y in range(N)]
     for i in range(0, N):
         matrixForIdentity[i][i] = 1
@@ -26,7 +26,7 @@ def identity(N):
 
 # region Dot
 
-def dot(matrix1: list, matrix2: list, N: int) -> list:
+def Dot(matrix1: list, matrix2: list, N: int) -> list:
     res = [[0 for x in range(N)] for y in range(N)]
 
     for i in range(len(matrix1)):
@@ -71,12 +71,12 @@ def PrintAll():
 
 PrintAll()
 
-S_matrix = identity(N)
+S_matrix = Identity(N)
 
 for x in range(N - 1, 0, -1):
-    M_matrix = identity(N)
+    M_matrix = Identity(N)
 
-    M_matrixInverted = identity(N)
+    M_matrixInverted = Identity(N)
 
     # Fill matrix b and minus one b
     for y in range(N):
@@ -90,13 +90,13 @@ for x in range(N - 1, 0, -1):
 
     PrintMatrixAsNp("M Matrix", M_matrix)
 
-    S_matrix = dot(S_matrix, M_matrix, N)
+    S_matrix = Dot(S_matrix, M_matrix, N)
 
     PrintMatrixAsNp("S Matrix", S_matrix)
 
     PrintMatrixAsNp("M Matrix Inverted", M_matrixInverted)
 
-    matrix = dot(M_matrixInverted, dot(matrix, M_matrix, N), N)
+    matrix = Dot(M_matrixInverted, Dot(matrix, M_matrix, N), N)
 
     PrintMatrixAsNp("Temporary result", matrix)
 
