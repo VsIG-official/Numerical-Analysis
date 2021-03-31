@@ -96,6 +96,6 @@ for x in range(N - 1, 0, -1):
 
     matrix = Dot(M_matrixInverted, Dot(matrix, M_matrix, N), N)
 
-    PrintMatrixAsNp("Temporary result", matrix)
+    PrintMatrixAsNp("Intermediate result", matrix)
 
 PrintMatrixAsNp("Final result as Frobenius Matrix", matrix)
