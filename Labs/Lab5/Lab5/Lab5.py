@@ -45,15 +45,24 @@ def MyNonSinFun(x: int) -> float:
     y_value = x ** (1. / 3.)
     return y_value
 
-#x = [3, 5, 7, 9, 11]
-#y = [MySinFun(x[0]), MySinFun(x[1]), MySinFun(x[2]), MySinFun(x[3]), MySinFun(x[4])]
+X_array = [3, 5, 7, 9, 11]
+Y_array = [MySinFun(X_array[0]), MySinFun(X_array[1]), MySinFun(X_array[2]), MySinFun(X_array[3]), MySinFun(X_array[4])]
 
-X_array = [1, 2, 3]
-Y_array = [MyNonSinFun(X_array[0]), MyNonSinFun(X_array[1]), MyNonSinFun(X_array[2])]
+for i in range(N):
+    Y_array[i] = round(Y_array[i], rounding)
+
+#X_array = [1, 2, 3]
+#Y_array = [MyNonSinFun(X_array[0]), MyNonSinFun(X_array[1]), MyNonSinFun(X_array[2])]
 
 # Implementing Lagrange Interpolation
 def Lagrange(x, y):
     PrintVectorAsNp("X", X_array)
     PrintVectorAsNp("Y", Y_array)
+    firstPart = f"{Y_array[0]} * (()/()) * (()/()) * (()/()) +"
+    secondPart = f"{Y_array[1]} * (()/()) * (()/()) * (()/()) +"
+    thirdPart = f"{Y_array[2]} * (()/()) * (()/()) * (()/()) +"
+    fourthPart = f"{Y_array[3]} * (()/()) * (()/()) * (()/()) +"
+    fifthPart = f"{Y_array[4]} * (()/()) * (()/()) * (()/())"
+    print(firstPart, secondPart, thirdPart, fourthPart, fifthPart)
 
 Lagrange(X_array, Y_array)
