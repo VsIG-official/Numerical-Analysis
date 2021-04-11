@@ -55,14 +55,14 @@ for i in range(N):
 #Y_array = [MyNonSinFun(X_array[0]), MyNonSinFun(X_array[1]), MyNonSinFun(X_array[2])]
 
 # Implementing Lagrange Interpolation
-def Lagrange(x, y):
+def Lagrange(X_array, Y_array):
     PrintVectorAsNp("X", X_array)
     PrintVectorAsNp("Y", Y_array)
-    firstPart = f"{Y_array[0]} * (()/()) * (()/()) * (()/()) +"
-    secondPart = f"{Y_array[1]} * (()/()) * (()/()) * (()/()) +"
-    thirdPart = f"{Y_array[2]} * (()/()) * (()/()) * (()/()) +"
-    fourthPart = f"{Y_array[3]} * (()/()) * (()/()) * (()/()) +"
-    fifthPart = f"{Y_array[4]} * (()/()) * (()/()) * (()/())"
+    firstPart = f"{Y_array[0]} * ((x - {X_array[2]})/({X_array[1]} - {X_array[2]})) * ((x - {X_array[3]})/({X_array[1]} - {X_array[3]})) * ((x - {X_array[4]})/({X_array[1]} - {X_array[4]})) * ((x - {X_array[5]})/({X_array[1]} - {X_array[5]})) +"
+    secondPart = f"{Y_array[1]} * ((x - {X_array[1]})/({X_array[2]} - {X_array[1]})) * ((x - {X_array[3]})/({X_array[2]} - {X_array[3]})) * ((x - {X_array[4]})/({X_array[2]} - {X_array[4]})) * ((x - {X_array[5]})/({X_array[2]} - {X_array[5]})) +"
+    thirdPart = f"{Y_array[2]} * ((x - {X_array[1]})/({X_array[3]} - {X_array[1]})) * ((x - {X_array[2]})/({X_array[3]} - {X_array[2]})) * ((x - {X_array[4]})/({X_array[3]} - {X_array[4]})) * ((x - {X_array[5]})/({X_array[3]} - {X_array[5]})) +"
+    fourthPart = f"{Y_array[3]} * ((x - {X_array[1]})/({X_array[4]} - {X_array[1]})) * ((x - {X_array[2]})/({X_array[4]} - {X_array[2]})) * ((x - {X_array[3]})/({X_array[4]} - {X_array[3]})) * ((x - {X_array[5]})/({X_array[4]} - {X_array[5]})) +"
+    fifthPart = f"{Y_array[4]} * ((x - {X_array[1]})/({X_array[5]} - {X_array[1]})) * ((x - {X_array[2]})/({X_array[5]} - {X_array[2]})) * ((x - {X_array[3]})/({X_array[5]} - {X_array[3]})) * ((x - {X_array[4]})/({X_array[5]} - {X_array[4]}))"
     print(firstPart, secondPart, thirdPart, fourthPart, fifthPart)
 
 Lagrange(X_array, Y_array)
