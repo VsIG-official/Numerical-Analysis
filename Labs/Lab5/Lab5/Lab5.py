@@ -66,14 +66,7 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
 
     AssignFirstFour(X_array, Y_array, matrixForCramer)
 
-    for i in range(1, len(X_array) - 1):
-        row = [0] * indexes_length
-        row[i] = 1
-        row[i-1] = -1
-        row[i+3] = -2 * differenceBetweenTwoPoints
-        row[i+7] = -3 * differenceBetweenTwoPoints ** 2
-        row[12] = 0
-        matrixForCramer.append(row)
+    AssignSecondFour(X_array, Y_array, matrixForCramer)
 
     for i in range(1, len(X_array) - 1):
         row = [0] * indexes_length
@@ -108,6 +101,16 @@ def AssignFirstFour(X_array, Y_array, matrixForCramer):
         row[i+3] = differenceBetweenTwoPoints ** 2
         row[i+7] = differenceBetweenTwoPoints ** 3
         row[12] = Y_array[i] - Y_array[i - 1]
+        matrixForCramer.append(row)
+
+def AssignSecondFour(X_array, Y_array, matrixForCramer):
+    for i in range(1, len(X_array) - 1):
+        row = [0] * indexes_length
+        row[i] = 1
+        row[i-1] = -1
+        row[i+3] = -2 * differenceBetweenTwoPoints
+        row[i+7] = -3 * differenceBetweenTwoPoints ** 2
+        row[12] = 0
         matrixForCramer.append(row)
 
 def solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
