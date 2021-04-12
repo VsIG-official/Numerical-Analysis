@@ -6,7 +6,8 @@ from math import sin
 
 rounding = 5
 N = 5
-indexes_length = 13
+numberOfUnknown = 12
+lengthOfRowForMatrix = numberOfUnknown + 1
 
 differenceBetweenTwoPoints = 2
 
@@ -18,6 +19,8 @@ def MySinFun(x: int, alpha=3) -> float:
     return element
 
 Yarray = [MySinFun(Xarray[0]), MySinFun(Xarray[1]), MySinFun(Xarray[2]), MySinFun(Xarray[3]), MySinFun(Xarray[4])]
+
+# endregion Starting Values
 
 # region Prints
 
@@ -65,7 +68,7 @@ def Lagrange(Xarray, Yarray, pointToShow, show) -> float:
 def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     # Create some prerequisites
     matrixForCramer = []
-    rightPartForCramer = [0] * (indexes_length - 1)
+    rightPartForCramer = [0] * (lengthOfRowForMatrix - 1)
 
     # Call Our functions to create matrix
     FirstPartOfEquation(Xarray, Yarray, matrixForCramer)
@@ -88,13 +91,13 @@ def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     print('Matrix A and vector B')
     print(np.matrix(matrixForCramer))
     print(rightPartForCramer)
-    return matrixForCramer, rightPartForCramer
+    return rightPartForCramer, matrixForCramer
 
 #region PartsOfEquation
 
 def FirstPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray)):
-        queue = [0] * indexes_length
+        queue = [0] * lengthOfRowForMatrix
 
         queue[i-1] = differenceBetweenTwoPoints; queue[i+3] = differenceBetweenTwoPoints ** 2
         queue[i+7] = differenceBetweenTwoPoints ** 3; queue[12] = Yarray[i] - Yarray[i - 1]
@@ -103,7 +106,7 @@ def FirstPartOfEquation(Xarray, Yarray, matrixForCramer):
 
 def SecondPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
-        queue = [0] * indexes_length
+        queue = [0] * lengthOfRowForMatrix
 
         queue[i] = 1; queue[i-1] = -1; queue[12] = 0
         queue[i+3] = -2 * differenceBetweenTwoPoints; queue[i+7] = -3 * differenceBetweenTwoPoints ** 2
@@ -112,21 +115,21 @@ def SecondPartOfEquation(Xarray, Yarray, matrixForCramer):
 
 def ThirdPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
-        queue = [0] * indexes_length
+        queue = [0] * lengthOfRowForMatrix
 
         queue[i+4] = 1; queue[i+3] = -1; queue[i+7] = -3 * differenceBetweenTwoPoints; queue[12] = 0
 
         matrixForCramer.append(queue)
 
 def FourthPartOfEquation(Xarray, Yarray, matrixForCramer):
-    queue = [0] * indexes_length
+    queue = [0] * lengthOfRowForMatrix
 
     queue[7] = 1; queue[11] = 3 * differenceBetweenTwoPoints; queue[12] = 0
 
     matrixForCramer.append(queue)
 
 def FifthPartOfEquation(Xarray, Yarray, matrixForCramer):
-    queue = [0] * indexes_length
+    queue = [0] * lengthOfRowForMatrix
 
     queue[4] = 1; queue[12] = 0
 
@@ -134,24 +137,29 @@ def FifthPartOfEquation(Xarray, Yarray, matrixForCramer):
 
 #endregion PartsOfEquation
 
-def solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
-    spline_coeffs = []
-    for i in range(0, len(rightPartForCramer)):
-        for j in range(0, len(rightPartForCramer)):
-            matrixForComputations[j][i] = rightPartForCramer[j]
-            if i > 0:
-                matrixForComputations[j][i - 1] = matrixForCramer[j][i - 1]
-        spline_coeffs.append(np.linalg.det(matrixForComputations) / np.linalg.det(matrixForCramer))
-    spline_coeffs = np.array(spline_coeffs).round(5)
-    return spline_coeffs
+# Do Cramer Method
+def Cramer(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
+    SIPcoeffs = []
 
+    for k in range(0, len(rightPartForCramer)):
+        for h in range(0, len(rightPartForCramer)):
+            matrixForComputations[h][k] = rightPartForCramer[h]
+            if k > 0:
+                matrixForComputations[h][k - 1] = matrixForCramer[h][k - 1]
+        SIPcoeffs.append(np.linalg.det(matrixForComputations) / np.linalg.det(matrixForCramer))
+        SIPcoeffs[k] = round(SIPcoeffs[k], rounding)
+    return SIPcoeffs
+
+# Printing Lagrange Equation
 PrintLagrange(Xarray, Yarray)
 
 for i in range(N):
     Lagrange(Xarray, Yarray, Xarray[i], True)
     print("Fault of element", Xarray[i], "=", abs(MySinFun(Xarray[i]) - Lagrange(Xarray, Yarray, Xarray[i], False)))
 
-matrixForCramer, rightPartForCramer = CreateMatrixForCramer(Xarray.copy(), Yarray.copy())
+rightPartForCramer, matrixForCramer = CreateMatrixForCramer(Xarray.copy(), Yarray.copy())
 matrixForComputations = matrixForCramer.copy()
-spline_coeffs = solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations)
-print(spline_coeffs)
+
+# Coefficients of spline interpolation polynomials
+SIPcoeffs = Cramer(matrixForCramer, rightPartForCramer, matrixForComputations)
+PrintVectorAsNp("Coefficients of spline interpolation polynomial", SIPcoeffs)
