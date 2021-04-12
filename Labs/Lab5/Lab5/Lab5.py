@@ -46,20 +46,18 @@ def PrintLagrange(X_array, Y_array):
     print(firstPart, secondPart, thirdPart, fourthPart, fifthPart, "\n")
 
 # Implementing Lagrange Interpolation
-def Lagrange(X_array, Y_array, element, show) -> float:
-    z = 0
-    for j in range(len(Y_array)):
-        p1 = 1; p2 = 1
-        for i in range(len(X_array)):
-            if i == j:
-                p1 = p1 * 1; p2 = p2 * 1
-            else:
-                p1 = p1 * (element - X_array[i])
-                p2 = p2 * (X_array[j] - X_array[i])
-        z = z + Y_array[j] * p1 / p2
+def Lagrange(X_array, Y_array, xp, show) -> float:
+    yp = 0
+    for j in range(N):
+        p = 1
+        for i in range(N):
+            if i != j:
+                p = p * (xp - X_array[j])/(X_array[i] - X_array[j])
+
+        yp = yp + p * Y_array[i]
     if show:
-        print("Coef of",element,"element =",z)
-    return z
+        print("Coef of",xp,"element =",yp)
+    return yp
 
 def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     matrixForCramer = []
