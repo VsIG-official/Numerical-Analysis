@@ -6,6 +6,7 @@ from math import sin
 
 rounding = 5
 N = 5
+h = 2
 
 # region Prints
 
@@ -63,28 +64,20 @@ def Lagrange(X_array, Y_array, element, show) -> float:
         print("Coef of",element,"element =",z)
     return z
 
-PrintLagrange(X_array, Y_array)
-
-for i in range(N):
-    Lagrange(X_array, Y_array, X_array[i], True)
-    print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
-
-def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
+def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
     matrix_a = []
-    indexes_length = 12
+    indexes_length = 13
     # I
-    for i in range(1, len(x_values)):
+    for i in range(1, len(X_array)):
         row = np.zeros(indexes_length)
-        h = x_values[i] - x_values[i - 1]
         row[indexes[f'b{i}']] = h
         row[indexes[f'c{i}']] = h ** 2
         row[indexes[f'd{i}']] = h ** 3
-        row[indexes['y']] = y_values[i] - y_values[i - 1]
+        row[indexes['y']] = Y_array[i] - Y_array[i - 1]
         matrix_a.append(row)
     # II
-    for i in range(1, len(x_values) - 1):
+    for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
-        h = x_values[i] - x_values[i - 1]
         row[indexes[f'b{i + 1}']] = 1
         row[indexes[f'b{i}']] = -1
         row[indexes[f'c{i}']] = -2 * h
@@ -92,9 +85,8 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
         row[indexes['y']] = 0
         matrix_a.append(row)
     # III
-    for i in range(1, len(x_values) - 1):
+    for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
-        h = x_values[i] - x_values[i - 1]
         row[indexes[f'c{i + 1}']] = 1
         row[indexes[f'c{i}']] = -1
         row[indexes[f'd{i}']] = -3 * h
@@ -102,8 +94,8 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
         matrix_a.append(row)
     # IV
     row = np.zeros(indexes_length)
-    row[indexes[f'c{len(x_values) - 1}']] = 1
-    row[indexes[f'd{len(x_values) - 1}']] = 3 * (x_values[-1] - x_values[-2])
+    row[indexes[f'c{len(X_array) - 1}']] = 1
+    row[indexes[f'd{len(X_array) - 1}']] = 3 * (X_array[-1] - X_array[-2])
     row[indexes['y']] = 0
     matrix_a.append(row)
     row = np.zeros(indexes_length)
@@ -114,7 +106,33 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     for i in range(len(matrix_a)):
         vector_b[i] = matrix_a[i][-1]
     matrix_a = np.delete(matrix_a, np.s_[-1:], axis=1)
-    print(template.substitute(string='Matrix A and vector B'))
+    print('Matrix A and vector B')
     print(np.matrix(matrix_a))
     print(vector_b)
     return matrix_a, vector_b
+
+def create_indexes(x_values: list) -> dict:
+    """
+    Function that creates indexes for spline coefficients matrix
+    :param x_values: our nodes
+    :return: dictionary with indexes
+    """
+    indexes = {}
+    length = len(x_values)
+    for i in range(length - 1):
+        indexes[f'b{i + 1}'] = i
+        indexes[f'c{i + 1}'] = i + length - 1
+        indexes[f'd{i + 1}'] = i + length * 2 - 2
+    indexes['y'] = (length - 1) * 3
+    return indexes
+
+PrintLagrange(X_array, Y_array)
+
+for i in range(N):
+    Lagrange(X_array, Y_array, X_array[i], True)
+    print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
+
+indexes = create_indexes(X_array.copy())
+
+matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy(), indexes.copy())
+matrix_c = matrix_a.copy()
