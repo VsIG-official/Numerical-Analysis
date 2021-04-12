@@ -97,7 +97,7 @@ def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
 
     for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
-        row[i] = 1
+        row[i+4] = 1
         row[i+3] = -1
         row[i+7] = -3 * h
         row[12] = 0
