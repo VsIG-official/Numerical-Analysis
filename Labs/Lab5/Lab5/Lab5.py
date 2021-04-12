@@ -6,6 +6,8 @@ from math import sin
 
 rounding = 5
 N = 5
+indexes_length = 13
+
 differenceBetweenTwoPoints = 2
 
 X_array = [3, 5, 7, 9, 11]
@@ -46,30 +48,23 @@ def PrintLagrange(X_array, Y_array):
     print(firstPart, secondPart, thirdPart, fourthPart, fifthPart, "\n")
 
 # Implementing Lagrange Interpolation
-def Lagrange(X_array, Y_array, xp, show) -> float:
-    yp = 0
+def Lagrange(X_array, Y_array, pointToShow, show) -> float:
+    resultAsYpoint = 0
     for j in range(N):
-        p = 1
+        tempPoint = 1
         for i in range(N):
             if i != j:
-                p = p * (xp - X_array[j])/(X_array[i] - X_array[j])
+                tempPoint = tempPoint * (pointToShow - X_array[j])/(X_array[i] - X_array[j])
 
-        yp = yp + p * Y_array[i]
+        resultAsYpoint = resultAsYpoint + tempPoint * Y_array[i]
     if show:
-        print("Coef of",xp,"element =",yp)
-    return yp
+        print("Coef of",pointToShow,"element =",resultAsYpoint)
+    return resultAsYpoint
 
 def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     matrixForCramer = []
-    indexes_length = 13
 
-    for i in range(1, len(X_array)):
-        row = [0] * indexes_length
-        row[i-1] = differenceBetweenTwoPoints
-        row[i+3] = differenceBetweenTwoPoints ** 2
-        row[i+7] = differenceBetweenTwoPoints ** 3
-        row[12] = Y_array[i] - Y_array[i - 1]
-        matrixForCramer.append(row)
+    AssignFirstFour(X_array, Y_array, matrixForCramer)
 
     for i in range(1, len(X_array) - 1):
         row = [0] * indexes_length
@@ -105,6 +100,15 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     print(np.matrix(matrixForCramer))
     print(rightPartForCramer)
     return matrixForCramer, rightPartForCramer
+
+def AssignFirstFour(X_array, Y_array, matrixForCramer):
+    for i in range(1, len(X_array)):
+        row = [0] * indexes_length
+        row[i-1] = differenceBetweenTwoPoints
+        row[i+3] = differenceBetweenTwoPoints ** 2
+        row[i+7] = differenceBetweenTwoPoints ** 3
+        row[12] = Y_array[i] - Y_array[i - 1]
+        matrixForCramer.append(row)
 
 def solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
     spline_coeffs = []
