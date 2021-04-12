@@ -6,7 +6,7 @@ from math import sin
 
 rounding = 5
 N = 5
-h = 2
+differenceBetweenTwoPoints = 2
 
 X_array = [3, 5, 7, 9, 11]
 
@@ -66,40 +66,40 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     indexes_length = 13
 
     for i in range(1, len(X_array)):
-        row = np.zeros(indexes_length)
-        row[i-1] = h
-        row[i+3] = h ** 2
-        row[i+7] = h ** 3
+        row = [0] * indexes_length
+        row[i-1] = differenceBetweenTwoPoints
+        row[i+3] = differenceBetweenTwoPoints ** 2
+        row[i+7] = differenceBetweenTwoPoints ** 3
         row[12] = Y_array[i] - Y_array[i - 1]
         matrixForCramer.append(row)
 
     for i in range(1, len(X_array) - 1):
-        row = np.zeros(indexes_length)
+        row = [0] * indexes_length
         row[i] = 1
         row[i-1] = -1
-        row[i+3] = -2 * h
-        row[i+7] = -3 * h ** 2
+        row[i+3] = -2 * differenceBetweenTwoPoints
+        row[i+7] = -3 * differenceBetweenTwoPoints ** 2
         row[12] = 0
         matrixForCramer.append(row)
 
     for i in range(1, len(X_array) - 1):
-        row = np.zeros(indexes_length)
+        row = [0] * indexes_length
         row[i+4] = 1
         row[i+3] = -1
-        row[i+7] = -3 * h
+        row[i+7] = -3 * differenceBetweenTwoPoints
         row[12] = 0
         matrixForCramer.append(row)
 
-    row = np.zeros(indexes_length)
+    row = [0] * indexes_length
     row[i+4] = 1
     row[i+8] = 3 * (X_array[-1] - X_array[-2])
     row[12] = 0
     matrixForCramer.append(row)
-    row = np.zeros(indexes_length)
+    row = [0] * indexes_length
     row[i+1] = 1
     row[12] = 0
     matrixForCramer.append(row)
-    rightPartForCramer = np.zeros(indexes_length - 1)
+    rightPartForCramer = [0] * (indexes_length - 1)
     for i in range(len(matrixForCramer)):
         rightPartForCramer[i] = matrixForCramer[i][-1]
     matrixForCramer = np.delete(matrixForCramer, np.s_[-1:], axis=1)
