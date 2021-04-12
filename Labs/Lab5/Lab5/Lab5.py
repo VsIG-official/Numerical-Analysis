@@ -18,7 +18,7 @@ def PrintMatrixAsNp(matrixName,matrix):
 # print vector
 def PrintVectorAsNp(vectorName, vector):
     print("\n", vectorName,"=")
-    npMatrix = np.array(vector).round(rounding)
+    npMatrix = np.array(vector)
     print(npMatrix.round(rounding))
 
 # print additional parametrs
@@ -68,3 +68,53 @@ PrintLagrange(X_array, Y_array)
 for i in range(N):
     Lagrange(X_array, Y_array, X_array[i], True)
     print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
+
+def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
+    matrix_a = []
+    indexes_length = 12
+    # I
+    for i in range(1, len(x_values)):
+        row = np.zeros(indexes_length)
+        h = x_values[i] - x_values[i - 1]
+        row[indexes[f'b{i}']] = h
+        row[indexes[f'c{i}']] = h ** 2
+        row[indexes[f'd{i}']] = h ** 3
+        row[indexes['y']] = y_values[i] - y_values[i - 1]
+        matrix_a.append(row)
+    # II
+    for i in range(1, len(x_values) - 1):
+        row = np.zeros(indexes_length)
+        h = x_values[i] - x_values[i - 1]
+        row[indexes[f'b{i + 1}']] = 1
+        row[indexes[f'b{i}']] = -1
+        row[indexes[f'c{i}']] = -2 * h
+        row[indexes[f'd{i}']] = -3 * h ** 2
+        row[indexes['y']] = 0
+        matrix_a.append(row)
+    # III
+    for i in range(1, len(x_values) - 1):
+        row = np.zeros(indexes_length)
+        h = x_values[i] - x_values[i - 1]
+        row[indexes[f'c{i + 1}']] = 1
+        row[indexes[f'c{i}']] = -1
+        row[indexes[f'd{i}']] = -3 * h
+        row[indexes['y']] = 0
+        matrix_a.append(row)
+    # IV
+    row = np.zeros(indexes_length)
+    row[indexes[f'c{len(x_values) - 1}']] = 1
+    row[indexes[f'd{len(x_values) - 1}']] = 3 * (x_values[-1] - x_values[-2])
+    row[indexes['y']] = 0
+    matrix_a.append(row)
+    row = np.zeros(indexes_length)
+    row[indexes['c1']] = 1
+    row[indexes['y']] = 0
+    matrix_a.append(row)
+    vector_b = np.zeros(indexes_length - 1)
+    for i in range(len(matrix_a)):
+        vector_b[i] = matrix_a[i][-1]
+    matrix_a = np.delete(matrix_a, np.s_[-1:], axis=1)
+    print(template.substitute(string='Matrix A and vector B'))
+    print(np.matrix(matrix_a))
+    print(vector_b)
+    return matrix_a, vector_b
