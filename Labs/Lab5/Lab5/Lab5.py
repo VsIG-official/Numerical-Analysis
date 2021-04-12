@@ -48,7 +48,7 @@ def PrintLagrange(X_array, Y_array):
     print(firstPart, secondPart, thirdPart, fourthPart, fifthPart, "\n")
 
 # Implementing Lagrange Interpolation
-def Lagrange(X_array, Y_array, element) -> float:
+def Lagrange(X_array, Y_array, element, show) -> float:
     z = 0
     for j in range(len(Y_array)):
         p1 = 1; p2 = 1
@@ -59,10 +59,12 @@ def Lagrange(X_array, Y_array, element) -> float:
                 p1 = p1 * (element - X_array[i])
                 p2 = p2 * (X_array[j] - X_array[i])
         z = z + Y_array[j] * p1 / p2
-    print("Coef of",element,"element =",z)
+    if show:
+        print("Coef of",element,"element =",z)
     return z
 
 PrintLagrange(X_array, Y_array)
 
 for i in range(N):
-    Lagrange(X_array, Y_array, X_array[i])
+    Lagrange(X_array, Y_array, X_array[i], True)
+    print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
