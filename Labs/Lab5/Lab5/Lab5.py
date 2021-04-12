@@ -21,19 +21,17 @@ Yarray = [MySinFun(Xarray[0]), MySinFun(Xarray[1]), MySinFun(Xarray[2]), MySinFu
 
 # region Prints
 
-# print matrix
+# Print matrix
 def PrintMatrixAsNp(matrixName,matrix):
     print("\n", matrixName,"=")
     npMatrix = np.array(matrix)
     print(npMatrix.round(rounding))
 
-# print vector
+# Print vector
 def PrintVectorAsNp(vectorName, vector):
     print("\n", vectorName,"=")
     npMatrix = np.array(vector)
     print(npMatrix.round(rounding))
-
-# endregion Prints
 
 # Print Lagrange
 def PrintLagrange(Xarray, Yarray):
@@ -47,10 +45,14 @@ def PrintLagrange(Xarray, Yarray):
     fifthPart = f"{Yarray[4]} * ((x - {Xarray[0]})/({Xarray[4]} - {Xarray[0]})) * ((x - {Xarray[1]})/({Xarray[4]} - {Xarray[1]})) * ((x - {Xarray[2]})/({Xarray[4]} - {Xarray[2]})) * ((x - {Xarray[3]})/({Xarray[4]} - {Xarray[3]}))"
     print(firstPart, secondPart, thirdPart, fourthPart, fifthPart, "\n")
 
+# endregion Prints
+
 # Implementing Lagrange Interpolation
 def Lagrange(Xarray, Yarray, pointToShow, show) -> float:
+    # Create some prerequisites
     resultAsYpoint = 0
     for j in range(N):
+        # Create some prerequisites
         tempPoint = 1
         for i in range(N):
             if i != j:
@@ -61,9 +63,11 @@ def Lagrange(Xarray, Yarray, pointToShow, show) -> float:
     return resultAsYpoint
 
 def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
+    # Create some prerequisites
     matrixForCramer = []
     rightPartForCramer = [0] * (indexes_length - 1)
 
+    # Call Our functions to create matrix
     FirstPartOfEquation(Xarray, Yarray, matrixForCramer)
 
     SecondPartOfEquation(Xarray, Yarray, matrixForCramer)
