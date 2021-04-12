@@ -64,17 +64,7 @@ def Lagrange(X_array, Y_array, element, show) -> float:
         print("Coef of",element,"element =",z)
     return z
 
-def create_indexes(x_values: list) -> dict:
-    indexes = {}
-    length = len(x_values)
-    for i in range(length - 1):
-        indexes[f'b{i + 1}'] = i
-        indexes[f'c{i + 1}'] = i + length - 1
-        indexes[f'd{i + 1}'] = i + length * 2 - 2
-    indexes['y'] = (length - 1) * 3
-    return indexes
-
-def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
+def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     matrix_a = []
     indexes_length = 13
 
@@ -104,13 +94,13 @@ def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
         matrix_a.append(row)
 
     row = np.zeros(indexes_length)
-    row[indexes[f'c{len(X_array) - 1}']] = 1
-    row[indexes[f'd{len(X_array) - 1}']] = 3 * (X_array[-1] - X_array[-2])
-    row[indexes['y']] = 0
+    row[i+4] = 1
+    row[i+8] = 3 * (X_array[-1] - X_array[-2])
+    row[12] = 0
     matrix_a.append(row)
     row = np.zeros(indexes_length)
-    row[indexes['c1']] = 1
-    row[indexes['y']] = 0
+    row[i+1] = 1
+    row[12] = 0
     matrix_a.append(row)
     vector_b = np.zeros(indexes_length - 1)
     for i in range(len(matrix_a)):
@@ -127,7 +117,5 @@ for i in range(N):
     Lagrange(X_array, Y_array, X_array[i], True)
     print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
 
-indexes = create_indexes(X_array.copy())
-
-matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy(), indexes.copy())
+matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
 matrix_c = matrix_a.copy()
