@@ -7,16 +7,13 @@ from math import sin
 rounding = 5
 N = 5
 h = 2
-numberOfUnknowns = 4
 
 X_array = [3, 5, 7, 9, 11]
 
-countOfX = len(X_array)
-
 # My Sin Function
 def MySinFun(x: int, alpha=3) -> float:
-    y_value = sin(alpha / 2 * x) + (x * alpha) ** (1 / 3)
-    return y_value
+    element = sin(alpha / 2 * x) + (x * alpha) ** (1 / 3)
+    return element
 
 Y_array = [MySinFun(X_array[0]), MySinFun(X_array[1]), MySinFun(X_array[2]), MySinFun(X_array[3]), MySinFun(X_array[4])]
 
@@ -111,14 +108,14 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     print(rightPartForCramer)
     return matrixForCramer, rightPartForCramer
 
-def solve_kramer_method(matrixForCramer, rightPartForCramer, matrix_c) -> list:
+def solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
     spline_coeffs = []
     for i in range(0, len(rightPartForCramer)):
         for j in range(0, len(rightPartForCramer)):
-            matrix_c[j][i] = rightPartForCramer[j]
+            matrixForComputations[j][i] = rightPartForCramer[j]
             if i > 0:
-                matrix_c[j][i - 1] = matrixForCramer[j][i - 1]
-        spline_coeffs.append(np.linalg.det(matrix_c) / np.linalg.det(matrixForCramer))
+                matrixForComputations[j][i - 1] = matrixForCramer[j][i - 1]
+        spline_coeffs.append(np.linalg.det(matrixForComputations) / np.linalg.det(matrixForCramer))
     spline_coeffs = np.array(spline_coeffs).round(5)
     return spline_coeffs
 
@@ -129,6 +126,6 @@ for i in range(N):
     print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
 
 matrixForCramer, rightPartForCramer = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
-matrix_c = matrixForCramer.copy()
-spline_coeffs = solve_kramer_method(matrixForCramer, rightPartForCramer, matrix_c)
+matrixForComputations = matrixForCramer.copy()
+spline_coeffs = solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations)
 print(spline_coeffs)
