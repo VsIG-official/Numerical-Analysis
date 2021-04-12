@@ -62,6 +62,7 @@ def Lagrange(Xarray, Yarray, pointToShow, show) -> float:
 
 def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     matrixForCramer = []
+    rightPartForCramer = [0] * (indexes_length - 1)
 
     FirstPartOfEquation(Xarray, Yarray, matrixForCramer)
 
@@ -73,9 +74,11 @@ def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
 
     FifthPartOfEquation(Xarray, Yarray, matrixForCramer)
 
-    rightPartForCramer = [0] * (indexes_length - 1)
+    # Create Right Part
     for i in range(len(matrixForCramer)):
         rightPartForCramer[i] = matrixForCramer[i][-1]
+
+    # Clean matrix
     matrixForCramer = np.delete(matrixForCramer, np.s_[-1:], axis=1)
 
     print('Matrix A and vector B')
@@ -83,44 +86,49 @@ def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     print(rightPartForCramer)
     return matrixForCramer, rightPartForCramer
 
+#region PartsOfEquation
+
 def FirstPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray)):
         queue = [0] * indexes_length
-        queue[i-1] = differenceBetweenTwoPoints
-        queue[i+3] = differenceBetweenTwoPoints ** 2
-        queue[i+7] = differenceBetweenTwoPoints ** 3
-        queue[12] = Yarray[i] - Yarray[i - 1]
+
+        queue[i-1] = differenceBetweenTwoPoints; queue[i+3] = differenceBetweenTwoPoints ** 2
+        queue[i+7] = differenceBetweenTwoPoints ** 3; queue[12] = Yarray[i] - Yarray[i - 1]
+
         matrixForCramer.append(queue)
 
 def SecondPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
         queue = [0] * indexes_length
-        queue[i] = 1; queue[i-1] = -1
-        queue[i+3] = -2 * differenceBetweenTwoPoints
-        queue[i+7] = -3 * differenceBetweenTwoPoints ** 2
-        queue[12] = 0
+
+        queue[i] = 1; queue[i-1] = -1; queue[12] = 0
+        queue[i+3] = -2 * differenceBetweenTwoPoints; queue[i+7] = -3 * differenceBetweenTwoPoints ** 2
+
         matrixForCramer.append(queue)
 
 def ThirdPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
         queue = [0] * indexes_length
-        queue[i+4] = 1; queue[i+3] = -1
-        queue[i+7] = -3 * differenceBetweenTwoPoints
-        queue[12] = 0
+
+        queue[i+4] = 1; queue[i+3] = -1; queue[i+7] = -3 * differenceBetweenTwoPoints; queue[12] = 0
+
         matrixForCramer.append(queue)
 
 def FourthPartOfEquation(Xarray, Yarray, matrixForCramer):
     queue = [0] * indexes_length
-    queue[7] = 1
-    queue[11] = 3 * (Xarray[-1] - Xarray[-2])
-    queue[12] = 0
+
+    queue[7] = 1; queue[11] = 3 * differenceBetweenTwoPoints; queue[12] = 0
+
     matrixForCramer.append(queue)
 
 def FifthPartOfEquation(Xarray, Yarray, matrixForCramer):
     queue = [0] * indexes_length
-    queue[4] = 1
-    queue[12] = 0
+
+    queue[4] = 1; queue[12] = 0
+
     matrixForCramer.append(queue)
+
+#endregion PartsOfEquation
 
 def solve_kramer_method(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
     spline_coeffs = []
