@@ -111,6 +111,24 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     print(vector_b)
     return matrix_a, vector_b
 
+def solve_kramer_method(matrix_a: list, vector_b: list, matrix_c: list) -> list:
+    """
+    Kramer function to find spline coeffiecents
+    :param matrix_a: matrix a
+    :param vector_b: vector b
+    :param matrix_c: matrix a copy
+    :return: list of spline coefficients
+    """
+    spline_coeffs = []
+    for i in range(0, len(vector_b)):
+        for j in range(0, len(vector_b)):
+            matrix_c[j][i] = vector_b[j]
+            if i > 0:
+                matrix_c[j][i - 1] = matrix_a[j][i - 1]
+        spline_coeffs.append(np.linalg.det(matrix_c) / np.linalg.det(matrix_a))
+    spline_coeffs = np.array(spline_coeffs).round(5)
+    return spline_coeffs
+
 PrintLagrange(X_array, Y_array)
 
 for i in range(N):
@@ -119,3 +137,5 @@ for i in range(N):
 
 matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
 matrix_c = matrix_a.copy()
+spline_coeffs = solve_kramer_method(matrix_a, vector_b, matrix_c)
+print(spline_coeffs)
