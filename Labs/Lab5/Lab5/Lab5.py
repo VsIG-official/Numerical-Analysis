@@ -7,6 +7,18 @@ from math import sin
 rounding = 5
 N = 5
 h = 2
+numberOfUnknowns = 4
+
+X_array = [3, 5, 7, 9, 11]
+
+countOfX = len(X_array)
+
+# My Sin Function
+def MySinFun(x: int, alpha=3) -> float:
+    y_value = sin(alpha / 2 * x) + (x * alpha) ** (1 / 3)
+    return y_value
+
+Y_array = [MySinFun(X_array[0]), MySinFun(X_array[1]), MySinFun(X_array[2]), MySinFun(X_array[3]), MySinFun(X_array[4])]
 
 # region Prints
 
@@ -22,19 +34,7 @@ def PrintVectorAsNp(vectorName, vector):
     npMatrix = np.array(vector)
     print(npMatrix.round(rounding))
 
-# print additional parametrs
-def PrintParametrs():
-    print("\nN =", N)
-
 # endregion Prints
-
-# My Sin Function
-def MySinFun(x: int, alpha=3) -> float:
-    y_value = sin(alpha / 2 * x) + (x * alpha) ** (1 / 3)
-    return y_value
-
-X_array = [3, 5, 7, 9, 11]
-Y_array = [MySinFun(X_array[0]), MySinFun(X_array[1]), MySinFun(X_array[2]), MySinFun(X_array[3]), MySinFun(X_array[4])]
 
 # Print Lagrange
 def PrintLagrange(X_array, Y_array):
@@ -64,43 +64,43 @@ def Lagrange(X_array, Y_array, element, show) -> float:
         print("Coef of",element,"element =",z)
     return z
 
-def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
+def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     matrix_a = []
     indexes_length = 13
-    # I
+
     for i in range(1, len(X_array)):
         row = np.zeros(indexes_length)
-        row[indexes[f'b{i}']] = h
-        row[indexes[f'c{i}']] = h ** 2
-        row[indexes[f'd{i}']] = h ** 3
-        row[indexes['y']] = Y_array[i] - Y_array[i - 1]
+        row[i-1] = h
+        row[i+3] = h ** 2
+        row[i+7] = h ** 3
+        row[12] = Y_array[i] - Y_array[i - 1]
         matrix_a.append(row)
-    # II
+
     for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
-        row[indexes[f'b{i + 1}']] = 1
-        row[indexes[f'b{i}']] = -1
-        row[indexes[f'c{i}']] = -2 * h
-        row[indexes[f'd{i}']] = -3 * h ** 2
-        row[indexes['y']] = 0
+        row[i] = 1
+        row[i-1] = -1
+        row[i+3] = -2 * h
+        row[i+7] = -3 * h ** 2
+        row[12] = 0
         matrix_a.append(row)
-    # III
+
     for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
-        row[indexes[f'c{i + 1}']] = 1
-        row[indexes[f'c{i}']] = -1
-        row[indexes[f'd{i}']] = -3 * h
-        row[indexes['y']] = 0
+        row[i] = 1
+        row[i+3] = -1
+        row[i+7] = -3 * h
+        row[12] = 0
         matrix_a.append(row)
-    # IV
+
     row = np.zeros(indexes_length)
-    row[indexes[f'c{len(X_array) - 1}']] = 1
-    row[indexes[f'd{len(X_array) - 1}']] = 3 * (X_array[-1] - X_array[-2])
-    row[indexes['y']] = 0
+    row[i+2] = 1
+    row[4] = 3 * (X_array[-1] - X_array[-2])
+    row[12] = 0
     matrix_a.append(row)
     row = np.zeros(indexes_length)
-    row[indexes['c1']] = 1
-    row[indexes['y']] = 0
+    row[6] = 1
+    row[12] = 0
     matrix_a.append(row)
     vector_b = np.zeros(indexes_length - 1)
     for i in range(len(matrix_a)):
@@ -111,20 +111,16 @@ def CreateMatrixForCramer(X_array, Y_array, indexes) -> [list, list]:
     print(vector_b)
     return matrix_a, vector_b
 
-def create_indexes(x_values: list) -> dict:
-    """
-    Function that creates indexes for spline coefficients matrix
-    :param x_values: our nodes
-    :return: dictionary with indexes
-    """
-    indexes = {}
-    length = len(x_values)
-    for i in range(length - 1):
-        indexes[f'b{i + 1}'] = i
-        indexes[f'c{i + 1}'] = i + length - 1
-        indexes[f'd{i + 1}'] = i + length * 2 - 2
-    indexes['y'] = (length - 1) * 3
-    return indexes
+def solve_kramer_method(matrix_a, vector_b, matrix_c) -> list:
+    spline_coeffs = []
+    for i in range(0, len(vector_b)):
+        for j in range(0, len(vector_b)):
+            matrix_c[j][i] = vector_b[j]
+            if i > 0:
+                matrix_c[j][i - 1] = matrix_a[j][i - 1]
+        spline_coeffs.append(np.linalg.det(matrix_c) / np.linalg.det(matrix_a))
+    spline_coeffs = np.array(spline_coeffs).round(5)
+    return spline_coeffs
 
 PrintLagrange(X_array, Y_array)
 
@@ -132,7 +128,7 @@ for i in range(N):
     Lagrange(X_array, Y_array, X_array[i], True)
     print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
 
-indexes = create_indexes(X_array.copy())
-
-matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy(), indexes.copy())
+matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
 matrix_c = matrix_a.copy()
+spline_coeffs = solve_kramer_method(matrix_a, vector_b, matrix_c)
+print(spline_coeffs)
