@@ -65,7 +65,7 @@ def Lagrange(X_array, Y_array, element, show) -> float:
     return z
 
 def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
-    matrix_a = []
+    matrixForCramer = []
     indexes_length = 13
 
     for i in range(1, len(X_array)):
@@ -74,7 +74,7 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
         row[i+3] = h ** 2
         row[i+7] = h ** 3
         row[12] = Y_array[i] - Y_array[i - 1]
-        matrix_a.append(row)
+        matrixForCramer.append(row)
 
     for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
@@ -83,7 +83,7 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
         row[i+3] = -2 * h
         row[i+7] = -3 * h ** 2
         row[12] = 0
-        matrix_a.append(row)
+        matrixForCramer.append(row)
 
     for i in range(1, len(X_array) - 1):
         row = np.zeros(indexes_length)
@@ -91,41 +91,34 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
         row[i+3] = -1
         row[i+7] = -3 * h
         row[12] = 0
-        matrix_a.append(row)
+        matrixForCramer.append(row)
 
     row = np.zeros(indexes_length)
     row[i+4] = 1
     row[i+8] = 3 * (X_array[-1] - X_array[-2])
     row[12] = 0
-    matrix_a.append(row)
+    matrixForCramer.append(row)
     row = np.zeros(indexes_length)
     row[i+1] = 1
     row[12] = 0
-    matrix_a.append(row)
-    vector_b = np.zeros(indexes_length - 1)
-    for i in range(len(matrix_a)):
-        vector_b[i] = matrix_a[i][-1]
-    matrix_a = np.delete(matrix_a, np.s_[-1:], axis=1)
+    matrixForCramer.append(row)
+    rightPartForCramer = np.zeros(indexes_length - 1)
+    for i in range(len(matrixForCramer)):
+        rightPartForCramer[i] = matrixForCramer[i][-1]
+    matrixForCramer = np.delete(matrixForCramer, np.s_[-1:], axis=1)
     print('Matrix A and vector B')
-    print(np.matrix(matrix_a))
-    print(vector_b)
-    return matrix_a, vector_b
+    print(np.matrix(matrixForCramer))
+    print(rightPartForCramer)
+    return matrixForCramer, rightPartForCramer
 
-def solve_kramer_method(matrix_a: list, vector_b: list, matrix_c: list) -> list:
-    """
-    Kramer function to find spline coeffiecents
-    :param matrix_a: matrix a
-    :param vector_b: vector b
-    :param matrix_c: matrix a copy
-    :return: list of spline coefficients
-    """
+def solve_kramer_method(matrixForCramer, rightPartForCramer, matrix_c) -> list:
     spline_coeffs = []
-    for i in range(0, len(vector_b)):
-        for j in range(0, len(vector_b)):
-            matrix_c[j][i] = vector_b[j]
+    for i in range(0, len(rightPartForCramer)):
+        for j in range(0, len(rightPartForCramer)):
+            matrix_c[j][i] = rightPartForCramer[j]
             if i > 0:
-                matrix_c[j][i - 1] = matrix_a[j][i - 1]
-        spline_coeffs.append(np.linalg.det(matrix_c) / np.linalg.det(matrix_a))
+                matrix_c[j][i - 1] = matrixForCramer[j][i - 1]
+        spline_coeffs.append(np.linalg.det(matrix_c) / np.linalg.det(matrixForCramer))
     spline_coeffs = np.array(spline_coeffs).round(5)
     return spline_coeffs
 
@@ -135,7 +128,7 @@ for i in range(N):
     Lagrange(X_array, Y_array, X_array[i], True)
     print("Fault of element", X_array[i], "=", abs(MySinFun(X_array[i]) - Lagrange(X_array, Y_array, X_array[i], False)))
 
-matrix_a, vector_b = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
-matrix_c = matrix_a.copy()
-spline_coeffs = solve_kramer_method(matrix_a, vector_b, matrix_c)
+matrixForCramer, rightPartForCramer = CreateMatrixForCramer(X_array.copy(), Y_array.copy())
+matrix_c = matrixForCramer.copy()
+spline_coeffs = solve_kramer_method(matrixForCramer, rightPartForCramer, matrix_c)
 print(spline_coeffs)
