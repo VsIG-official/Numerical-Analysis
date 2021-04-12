@@ -64,25 +64,21 @@ def Lagrange(X_array, Y_array, pointToShow, show) -> float:
 def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     matrixForCramer = []
 
-    AssignFirstFour(X_array, Y_array, matrixForCramer)
+    FirstPartOfEquation(X_array, Y_array, matrixForCramer)
 
-    AssignSecondFour(X_array, Y_array, matrixForCramer)
+    SecondPartOfEquation(X_array, Y_array, matrixForCramer)
 
-    for i in range(1, len(X_array) - 1):
-        row = [0] * indexes_length
-        row[i+4] = 1
-        row[i+3] = -1
-        row[i+7] = -3 * differenceBetweenTwoPoints
-        row[12] = 0
-        matrixForCramer.append(row)
+    ThirdPartOfEquation(X_array, Y_array, matrixForCramer)
+
+
 
     row = [0] * indexes_length
-    row[i+4] = 1
-    row[i+8] = 3 * (X_array[-1] - X_array[-2])
+    row[7] = 1
+    row[11] = 3 * (X_array[-1] - X_array[-2])
     row[12] = 0
     matrixForCramer.append(row)
     row = [0] * indexes_length
-    row[i+1] = 1
+    row[4] = 1
     row[12] = 0
     matrixForCramer.append(row)
     rightPartForCramer = [0] * (indexes_length - 1)
@@ -94,7 +90,7 @@ def CreateMatrixForCramer(X_array, Y_array) -> [list, list]:
     print(rightPartForCramer)
     return matrixForCramer, rightPartForCramer
 
-def AssignFirstFour(X_array, Y_array, matrixForCramer):
+def FirstPartOfEquation(X_array, Y_array, matrixForCramer):
     for i in range(1, len(X_array)):
         row = [0] * indexes_length
         row[i-1] = differenceBetweenTwoPoints
@@ -103,13 +99,22 @@ def AssignFirstFour(X_array, Y_array, matrixForCramer):
         row[12] = Y_array[i] - Y_array[i - 1]
         matrixForCramer.append(row)
 
-def AssignSecondFour(X_array, Y_array, matrixForCramer):
+def SecondPartOfEquation(X_array, Y_array, matrixForCramer):
     for i in range(1, len(X_array) - 1):
         row = [0] * indexes_length
         row[i] = 1
         row[i-1] = -1
         row[i+3] = -2 * differenceBetweenTwoPoints
         row[i+7] = -3 * differenceBetweenTwoPoints ** 2
+        row[12] = 0
+        matrixForCramer.append(row)
+
+def ThirdPartOfEquation(X_array, Y_array, matrixForCramer):
+    for i in range(1, len(X_array) - 1):
+        row = [0] * indexes_length
+        row[i+4] = 1
+        row[i+3] = -1
+        row[i+7] = -3 * differenceBetweenTwoPoints
         row[12] = 0
         matrixForCramer.append(row)
 
