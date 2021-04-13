@@ -51,23 +51,38 @@ def PrintLagrange(Xarray, Yarray):
 # endregion Prints
 
 # Implementing Lagrange Interpolation
-def Lagrange(Xarray, Yarray, pointToShow, show) -> float:
+def Lagrange(X_array, Y_array, pointToShow, show) -> float:
     # Create some prerequisites
     resultAsYpoint = 0
-    for j in range(N):
+    for k in range(len(Y_array)):
         # Create some prerequisites
-        tempPoint = 1
-        for i in range(N):
-            if i != j:
-                tempPoint = tempPoint * (pointToShow - Xarray[j])/(Xarray[i] - Xarray[j])
-        resultAsYpoint = resultAsYpoint + tempPoint * Yarray[i]
+        tempPoint1 = 0
+        tempPoint2 = 0
+
+        tempPointArray = [tempPoint1, tempPoint2]
+
+        tempPointArray[0] = 1
+        tempPointArray[1] = 1
+
+        for m in range(len(X_array)):
+            if m == k:
+                for z in range(2):
+                    tempPointArray[z] = tempPointArray[z] * 1
+
+            else:
+                tempPointArray[1] = tempPointArray[1] * (X_array[k] - X_array[m])
+                tempPointArray[0] = tempPointArray[0] * (pointToShow - X_array[m])
+
+        resultAsYpoint = resultAsYpoint + Y_array[k] * tempPointArray[0] / tempPointArray[1]
+
     if show:
         print("Coef of",pointToShow,"element =",resultAsYpoint)
+
     return resultAsYpoint
 
 def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     # Create some prerequisites
-    matrixForCramer = []
+    matrixForCramer = list()
     rightPartForCramer = [0] * (lengthOfRowForMatrix - 1)
 
     # Call Our functions to create matrix
@@ -88,9 +103,6 @@ def CreateMatrixForCramer(Xarray, Yarray) -> [list, list]:
     # Clean matrix
     matrixForCramer = np.delete(matrixForCramer, np.s_[-1:], axis=1)
 
-    print('Matrix A and vector B')
-    print(np.matrix(matrixForCramer))
-    print(rightPartForCramer)
     return rightPartForCramer, matrixForCramer
 
 #region PartsOfEquation
@@ -138,16 +150,24 @@ def FifthPartOfEquation(Xarray, Yarray, matrixForCramer):
 #endregion PartsOfEquation
 
 # Do Cramer Method
-def Cramer(matrixForCramer, rightPartForCramer, matrixForComputations) -> list:
-    SIPcoeffs = []
+def Cramer(matrixForComputations, matrixForCramer, rightPartForCramer) -> list:
+    # Create some prerequisites
+    SIPcoeffs = list()
 
     for k in range(0, len(rightPartForCramer)):
         for h in range(0, len(rightPartForCramer)):
+            # Get values for right part
             matrixForComputations[h][k] = rightPartForCramer[h]
+
             if k > 0:
                 matrixForComputations[h][k - 1] = matrixForCramer[h][k - 1]
+
+        # Add value to the vector
         SIPcoeffs.append(np.linalg.det(matrixForComputations) / np.linalg.det(matrixForCramer))
+
+        # Rounding values
         SIPcoeffs[k] = round(SIPcoeffs[k], rounding)
+
     return SIPcoeffs
 
 # Printing Lagrange Equation
@@ -158,8 +178,8 @@ for i in range(N):
     print("Fault of element", Xarray[i], "=", abs(MySinFun(Xarray[i]) - Lagrange(Xarray, Yarray, Xarray[i], False)))
 
 rightPartForCramer, matrixForCramer = CreateMatrixForCramer(Xarray.copy(), Yarray.copy())
-matrixForComputations = matrixForCramer.copy()
+matrixForComputations = list(map(list, matrixForCramer))
 
 # Coefficients of spline interpolation polynomials
-SIPcoeffs = Cramer(matrixForCramer, rightPartForCramer, matrixForComputations)
+SIPcoeffs = Cramer(matrixForComputations, matrixForCramer, rightPartForCramer)
 PrintVectorAsNp("Coefficients of spline interpolation polynomial", SIPcoeffs)
