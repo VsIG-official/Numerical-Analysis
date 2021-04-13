@@ -9,6 +9,10 @@ numberOfUnknown = 12
 lengthOfRowForMatrix = numberOfUnknown + 1
 
 differenceBetweenTwoPoints = 2
+firstIndex = 1
+secondIndex = 3
+thirdIndex = 7
+lastIndex = 12
 
 Xarray = [3, 5, 7, 9, 11]
 
@@ -110,8 +114,8 @@ def FirstPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray)):
         queue = [0] * lengthOfRowForMatrix
 
-        queue[i-1] = differenceBetweenTwoPoints; queue[i+3] = differenceBetweenTwoPoints ** 2
-        queue[i+7] = differenceBetweenTwoPoints ** 3; queue[12] = Yarray[i] - Yarray[i - 1]
+        queue[i-firstIndex] = differenceBetweenTwoPoints; queue[i+secondIndex] = differenceBetweenTwoPoints ** 2
+        queue[i+thirdIndex] = differenceBetweenTwoPoints ** 3; queue[lastIndex] = Yarray[i] - Yarray[i - 1]
 
         matrixForCramer.append(queue)
 
@@ -119,8 +123,8 @@ def SecondPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
         queue = [0] * lengthOfRowForMatrix
 
-        queue[i] = 1; queue[i-1] = -1; queue[12] = 0
-        queue[i+3] = -2 * differenceBetweenTwoPoints; queue[i+7] = -3 * differenceBetweenTwoPoints ** 2
+        queue[i] = 1; queue[i-firstIndex] = -1; queue[lastIndex] = 0
+        queue[i+secondIndex] = -2 * differenceBetweenTwoPoints; queue[i+thirdIndex] = -3 * differenceBetweenTwoPoints ** 2
 
         matrixForCramer.append(queue)
 
@@ -128,21 +132,21 @@ def ThirdPartOfEquation(Xarray, Yarray, matrixForCramer):
     for i in range(1, len(Xarray) - 1):
         queue = [0] * lengthOfRowForMatrix
 
-        queue[i+4] = 1; queue[i+3] = -1; queue[i+7] = -3 * differenceBetweenTwoPoints; queue[12] = 0
+        queue[i+secondIndex+1] = 1; queue[i+secondIndex] = -1; queue[i+thirdIndex] = -3 * differenceBetweenTwoPoints; queue[lastIndex] = 0
 
         matrixForCramer.append(queue)
 
 def FourthPartOfEquation(Xarray, Yarray, matrixForCramer):
     queue = [0] * lengthOfRowForMatrix
 
-    queue[7] = 1; queue[11] = 3 * differenceBetweenTwoPoints; queue[12] = 0
+    queue[thirdIndex] = 1; queue[lastIndex-1] = 3 * differenceBetweenTwoPoints; queue[lastIndex] = 0
 
     matrixForCramer.append(queue)
 
 def FifthPartOfEquation(Xarray, Yarray, matrixForCramer):
     queue = [0] * lengthOfRowForMatrix
 
-    queue[4] = 1; queue[12] = 0
+    queue[secondIndex+1] = 1; queue[lastIndex] = 0
 
     matrixForCramer.append(queue)
 
