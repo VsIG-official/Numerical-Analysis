@@ -9,6 +9,7 @@ numberOfUnknown = 12
 lengthOfRowForMatrix = numberOfUnknown + 1
 
 differenceBetweenTwoPoints = 2
+
 firstIndex = 1
 secondIndex = 3
 thirdIndex = 7
@@ -17,8 +18,8 @@ lastIndex = 12
 Xarray = [3, 5, 7, 9, 11]
 
 # My Sin Function
-def MySinFun(x: int, alpha=3) -> float:
-    element = sin(alpha / 2 * x) + (x * alpha) ** (1 / 3)
+def MySinFun(x) -> float:
+    element = sin(3 / 2 * x) + (x * 3) ** (1 / 3)
     return element
 
 Yarray = [MySinFun(Xarray[0]), MySinFun(Xarray[1]), MySinFun(Xarray[2]), MySinFun(Xarray[3]), MySinFun(Xarray[4])]
