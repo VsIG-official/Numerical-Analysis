@@ -17,12 +17,36 @@ lastIndex = 12
 
 Xarray = [3, 5, 7, 9, 11]
 
+# region xValues for Faults
+
+XarrayForFault1 = [3, 3.25, 3.5, 3.75, 4]
+XarrayForFault2 = [4.25, 4.5, 4.75, 5, 5.25]
+XarrayForFault3 = [5.5, 5.75, 6, 6.25, 6.5]
+XarrayForFault4 = [6.75, 7, 7.25, 7.5, 7.75]
+XarrayForFault5 = [8, 8.25, 8.5, 8.75, 9]
+XarrayForFault6 = [9.25, 9.5, 9.75, 10, 10.25]
+XarrayForFault7 = [10.5, 10.75, 11]
+
+# endregion xValues for Faults
+
 # My Sin Function
 def MySinFun(x) -> float:
     element = sin(3 / 2 * x) + (x * 3) ** (1 / 3)
     return element
 
 Yarray = [MySinFun(Xarray[0]), MySinFun(Xarray[1]), MySinFun(Xarray[2]), MySinFun(Xarray[3]), MySinFun(Xarray[4])]
+
+# region yValues Faults
+
+YarrayForFault1 = [MySinFun(XarrayForFault1[0]), MySinFun(XarrayForFault1[1]), MySinFun(XarrayForFault1[2]), MySinFun(XarrayForFault1[3]), MySinFun(XarrayForFault1[4])]
+YarrayForFault2 = [MySinFun(XarrayForFault2[0]), MySinFun(XarrayForFault2[1]), MySinFun(XarrayForFault2[2]), MySinFun(XarrayForFault2[3]), MySinFun(XarrayForFault2[4])]
+YarrayForFault3 = [MySinFun(XarrayForFault3[0]), MySinFun(XarrayForFault3[1]), MySinFun(XarrayForFault3[2]), MySinFun(XarrayForFault3[3]), MySinFun(XarrayForFault3[4])]
+YarrayForFault4 = [MySinFun(XarrayForFault4[0]), MySinFun(XarrayForFault4[1]), MySinFun(XarrayForFault4[2]), MySinFun(XarrayForFault4[3]), MySinFun(XarrayForFault4[4])]
+YarrayForFault5 = [MySinFun(XarrayForFault5[0]), MySinFun(XarrayForFault5[1]), MySinFun(XarrayForFault5[2]), MySinFun(XarrayForFault5[3]), MySinFun(XarrayForFault5[4])]
+YarrayForFault6 = [MySinFun(XarrayForFault6[0]), MySinFun(XarrayForFault6[1]), MySinFun(XarrayForFault6[2]), MySinFun(XarrayForFault6[3]), MySinFun(XarrayForFault6[4])]
+YarrayForFault7 = [MySinFun(XarrayForFault7[0]), MySinFun(XarrayForFault7[1]), MySinFun(XarrayForFault7[2])]
+
+# endregion xValues Faults
 
 # endregion Starting Values
 
@@ -177,9 +201,42 @@ def Cramer(matrixForComputations, matrixForCramer, rightPartForCramer) -> list:
 # Printing Lagrange Equation
 PrintLagrange(Xarray, Yarray)
 
+# region Faults
 for i in range(N):
     Lagrange(Xarray, Yarray, Xarray[i], True)
     print("Fault of element", Xarray[i], "=", abs(MySinFun(Xarray[i]) - Lagrange(Xarray, Yarray, Xarray[i], False)))
+
+print("\n")
+
+for i in range(N):
+    Lagrange(XarrayForFault1, YarrayForFault1, XarrayForFault1[i], True)
+    print("Fault of element", XarrayForFault1[i], "=", abs(MySinFun(XarrayForFault1[i]) - Lagrange(XarrayForFault1, YarrayForFault1, XarrayForFault1[i], False)))
+
+for i in range(N):
+    Lagrange(XarrayForFault2, YarrayForFault2, XarrayForFault2[i], True)
+    print("Fault of element", XarrayForFault2[i], "=", abs(MySinFun(XarrayForFault2[i]) - Lagrange(XarrayForFault2, YarrayForFault2, XarrayForFault2[i], False)))
+
+for i in range(N):
+    Lagrange(XarrayForFault3, YarrayForFault3, XarrayForFault3[i], True)
+    print("Fault of element", XarrayForFault3[i], "=", abs(MySinFun(XarrayForFault3[i]) - Lagrange(XarrayForFault3, YarrayForFault3, XarrayForFault3[i], False)))
+
+for i in range(N):
+    Lagrange(XarrayForFault4, YarrayForFault4, XarrayForFault4[i], True)
+    print("Fault of element", XarrayForFault4[i], "=", abs(MySinFun(XarrayForFault4[i]) - Lagrange(XarrayForFault4, YarrayForFault4, XarrayForFault4[i], False)))
+
+for i in range(N):
+    Lagrange(XarrayForFault5, YarrayForFault5, XarrayForFault5[i], True)
+    print("Fault of element", XarrayForFault5[i], "=", abs(MySinFun(XarrayForFault5[i]) - Lagrange(XarrayForFault5, YarrayForFault5, XarrayForFault5[i], False)))
+
+for i in range(N):
+    Lagrange(XarrayForFault6, YarrayForFault6, XarrayForFault6[i], True)
+    print("Fault of element", XarrayForFault6[i], "=", abs(MySinFun(XarrayForFault6[i]) - Lagrange(XarrayForFault6, YarrayForFault6, XarrayForFault6[i], False)))
+
+for i in range(len(XarrayForFault7)):
+    Lagrange(XarrayForFault7, YarrayForFault7, XarrayForFault7[i], True)
+    print("Fault of element", XarrayForFault7[i], "=", abs(MySinFun(XarrayForFault7[i]) - Lagrange(XarrayForFault7, YarrayForFault7, XarrayForFault7[i], False)))
+
+# endregion Faults
 
 rightPartForCramer, matrixForCramer = CreateMatrixForCramer(Xarray.copy(), Yarray.copy())
 matrixForComputations = list(map(list, matrixForCramer))
