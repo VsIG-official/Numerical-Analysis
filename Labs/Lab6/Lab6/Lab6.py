@@ -1,8 +1,4 @@
-
 # region Starting Values
-
-import numpy as np
-np.set_printoptions(suppress=True)
 
 rounding = 5
 epsilonValue = 0.00001
@@ -17,12 +13,12 @@ half = 2
 #region Default Functions
 
 def MyFunction(x):
-    result = 10 * x ** 5 - 2 * x ** 4 - 4 * x ** 3 + 2 * x + 3
-    return result
+    func = 10 * x ** 5 - 2 * x ** 4 - 4 * x ** 3 + 2 * x + 3
+    return func
 
 def MyPrimeFunction(x):
-    result = 50 * x ** 4 - 8 * x ** 3 - 12 * x ** 2 + 2
-    return result
+    func = 50 * x ** 4 - 8 * x ** 3 - 12 * x ** 2 + 2
+    return func
 
 #endregion Default Functions
 
@@ -36,18 +32,22 @@ def BisectionAndChords(intervals, index):
         firstInterval = intervals[0]
         secondInterval = intervals[1]
 
-        while abs(MyFunction(finalNumber)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
+        # completion criterion
+        while epsilonValue < abs(MyFunction(finalNumber)) and epsilonValue < abs(firstInterval - secondInterval):
             # if 0, then do bisection
             if index == 0:
-                finalNumber = (firstInterval + secondInterval) / half
+                finalNumber = (secondInterval + firstInterval) / half
             # else do chords
             else:
-                finalNumber = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
-            if MyFunction(finalNumber) * MyFunction(secondInterval) <= 0:
+                finalNumber = (MyFunction(secondInterval) * firstInterval - MyFunction(firstInterval) * secondInterval) / (MyFunction(secondInterval) - MyFunction(firstInterval))
+
+            if MyFunction(secondInterval) * MyFunction(finalNumber) <= 0:
                 firstInterval = finalNumber
-            elif MyFunction(finalNumber) * MyFunction(firstInterval) <= 0:
+            elif MyFunction(firstInterval) * MyFunction(finalNumber) <= 0:
                 secondInterval = finalNumber
+
             numberOfIterations = numberOfIterations + 1
+
     return finalNumber, numberOfIterations
 
 def Newton(intervals):
@@ -56,16 +56,20 @@ def Newton(intervals):
         initialXPos = 0
         firstInterval = intervals[0]
         secondInterval = intervals[1]
-        if MyPrimeFunction(firstInterval) * MyFunction(firstInterval) > 0:
+
+        if MyFunction(firstInterval) * MyPrimeFunction(firstInterval) > 0:
             initialXPos = firstInterval
         else:
             initialXPos = secondInterval
+
         finalNumber = initialXPos - MyFunction(initialXPos) / MyPrimeFunction(initialXPos)
         numberOfIterations = numberOfIterations + 1
 
+        # completion criterion
         while epsilonValue < abs(MyFunction(finalNumber)):
             finalNumber = finalNumber - MyFunction(finalNumber) / MyPrimeFunction(finalNumber)
             numberOfIterations = numberOfIterations + 1
+
     return finalNumber, numberOfIterations
 
 #endregion Methods Functions
