@@ -9,7 +9,7 @@ epsilonValue = 0.00001
 interval = [-0.8, -0.7]
 polynomEquation = "10 * x ** 5 - 2 * x ** 4 - 4 * x ** 3 + 2 * x + 3"
 polynomCoeffs = [10, -2, -4, 0, 2, 3]
-rootFromMathcad = -0.76216
+rootFromMathcad = -0.762158358336533
 half = 2
 
 # endregion Starting Values
@@ -28,36 +28,6 @@ def MyPrimeFunction(x):
 
 #region Methods Functions
 
-def Bisection(intervals):
-    numberOfIterations = 0
-    for i in intervals:
-        numberToStop = epsilonValue * 10 ** 8
-        firstInterval = intervals[0]
-        secondInterval = intervals[1]
-        while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
-            numberToStop = (firstInterval + secondInterval) / half
-            if MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
-                firstInterval = numberToStop
-            elif MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
-                secondInterval = numberToStop
-            numberOfIterations = numberOfIterations + 1
-    return numberToStop, numberOfIterations
-
-def Chords(intervals):
-    numberOfIterations = 0
-    for i in intervals:
-        numberToStop = epsilonValue * 10 ** 8
-        firstInterval = intervals[0]
-        secondInterval = intervals[1]
-        while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
-            numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
-            if MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
-                firstInterval = numberToStop
-            elif MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
-                secondInterval = numberToStop
-            numberOfIterations = numberOfIterations + 1
-    return numberToStop, numberOfIterations
-
 def BisectionAndChords(intervals, index):
     numberOfIterations = 0
     for i in intervals:
@@ -65,7 +35,7 @@ def BisectionAndChords(intervals, index):
         firstInterval = intervals[0]
         secondInterval = intervals[1]
         while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
-            if index == 1:
+            if index == 0:
                 numberToStop = (firstInterval + secondInterval) / half
             else:
                 numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
@@ -102,11 +72,11 @@ print("\nMy Interval", interval)
 print("\nMathcad root\n", rootFromMathcad)
 
 print("\nBisection:")
-bisectionRoots, bisectionIterations = Bisection(interval)
+bisectionRoots, bisectionIterations = BisectionAndChords(interval, 0)
 print("Root of equation:\n", bisectionRoots, "\nNumber of iterations:\n", bisectionIterations)
 
 print("\nChords:")
-chordsRoots, chordsIterations = Chords(interval)
+chordsRoots, chordsIterations = BisectionAndChords(interval, 1)
 print("Root of equation:\n", chordsRoots, "\nNumber of iterations:\n", chordsIterations)
 
 print("\nNewton:")
