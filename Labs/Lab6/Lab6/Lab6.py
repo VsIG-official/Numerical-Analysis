@@ -28,7 +28,7 @@ def MyPrimeFunction(x):
 
 #region Methods Functions
 
-def bisectionMethod(intervals):
+def Bisection(intervals):
     numberOfIterations = 0
     for i in intervals:
         numberToStop = epsilonValue * 10 ** 8
@@ -43,7 +43,7 @@ def bisectionMethod(intervals):
             numberOfIterations = numberOfIterations + 1
     return numberToStop, numberOfIterations
 
-def chordsMethod(intervals):
+def Chords(intervals):
     numberOfIterations = 0
     for i in intervals:
         numberToStop = epsilonValue * 10 ** 8
@@ -58,7 +58,25 @@ def chordsMethod(intervals):
             numberOfIterations = numberOfIterations + 1
     return numberToStop, numberOfIterations
 
-def newtonMethod(intervals):
+def BisectionAndChords(intervals, index):
+    numberOfIterations = 0
+    for i in intervals:
+        numberToStop = epsilonValue * 10 ** 8
+        firstInterval = intervals[0]
+        secondInterval = intervals[1]
+        while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
+            if index == 1:
+                numberToStop = (firstInterval + secondInterval) / half
+            else:
+                numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
+            if MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
+                firstInterval = numberToStop
+            elif MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
+                secondInterval = numberToStop
+            numberOfIterations = numberOfIterations + 1
+    return numberToStop, numberOfIterations
+
+def Newton(intervals):
     numberOfIterations = 0
     for i in intervals:
         initialXPos = 0
@@ -84,15 +102,15 @@ print("\nMy Interval", interval)
 print("\nMathcad root\n", rootFromMathcad)
 
 print("\nBisection:")
-bisectionRoots, bisectionIterations = bisectionMethod(interval)
+bisectionRoots, bisectionIterations = Bisection(interval)
 print("Root of equation:\n", bisectionRoots, "\nNumber of iterations:\n", bisectionIterations)
 
-print("\nNewton:")
-newtonRoots, newtonIterations = newtonMethod(interval)
-print("Root of equation:\n", newtonRoots, "\nNumber of iterations:\n", newtonIterations)
-
 print("\nChords:")
-chordsRoots, chordsIterations = chordsMethod(interval)
+chordsRoots, chordsIterations = Chords(interval)
 print("Root of equation:\n", chordsRoots, "\nNumber of iterations:\n", chordsIterations)
+
+print("\nNewton:")
+newtonRoots, newtonIterations = Newton(interval)
+print("Root of equation:\n", newtonRoots, "\nNumber of iterations:\n", newtonIterations)
 
 #endregion Results
