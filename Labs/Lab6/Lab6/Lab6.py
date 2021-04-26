@@ -21,5 +21,20 @@ def MyPrimeFunction(x):
     result = 50 * x ** 4 - 8 * x ** 3 - 12 * x ** 2 + 2
     return result
 
+def bisectionMethod(intervals, coeffs):
+        answers = []
+        iterations = 0
+        for interval in intervals:
+            root = 1000
+            a, b = intervals[0], intervals[1]
+            while abs(b - a) > epsilonValue and abs(MyFunction(root)) > epsilonValue:
+                root = (a + b) / 2
+                if MyFunction(root) * MyFunction(a) <= 0:
+                    a, b = a, root
+                elif MyFunction(root) * MyFunction(b) <= 0:
+                    a, b = root, b
+                iterations += 1
+            answers.append(root)
+        print(f'Answers: {answers}, iterations: {iterations}')
 
-
+bisectionMethod(interval, polynomCoeffs)
