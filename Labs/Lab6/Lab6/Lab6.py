@@ -49,12 +49,12 @@ def chordsMethod(intervals):
         numberToStop = epsilonValue * 10 ** 8
         firstInterval = intervals[0]
         secondInterval = intervals[1]
-        while abs(secondInterval - firstInterval) > epsilonValue and abs(MyFunction(numberToStop)) > epsilonValue:
+        while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
             numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
-            if MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
-                secondInterval = numberToStop
-            elif MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
+            if MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
                 firstInterval = numberToStop
+            elif MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
+                secondInterval = numberToStop
             numberOfIterations = numberOfIterations + 1
     return numberToStop, numberOfIterations
 
