@@ -31,20 +31,24 @@ def MyPrimeFunction(x):
 def BisectionAndChords(intervals, index):
     numberOfIterations = 0
     for i in intervals:
-        numberToStop = epsilonValue * 10 ** 8
+        # shouldn't be 0
+        finalNumber = 1
         firstInterval = intervals[0]
         secondInterval = intervals[1]
-        while abs(MyFunction(numberToStop)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
+
+        while abs(MyFunction(finalNumber)) > epsilonValue and abs(secondInterval - firstInterval) > epsilonValue:
+            # if 0, then do bisection
             if index == 0:
-                numberToStop = (firstInterval + secondInterval) / half
+                finalNumber = (firstInterval + secondInterval) / half
+            # else do chords
             else:
-                numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
-            if MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
-                firstInterval = numberToStop
-            elif MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
-                secondInterval = numberToStop
+                finalNumber = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
+            if MyFunction(finalNumber) * MyFunction(secondInterval) <= 0:
+                firstInterval = finalNumber
+            elif MyFunction(finalNumber) * MyFunction(firstInterval) <= 0:
+                secondInterval = finalNumber
             numberOfIterations = numberOfIterations + 1
-    return numberToStop, numberOfIterations
+    return finalNumber, numberOfIterations
 
 def Newton(intervals):
     numberOfIterations = 0
@@ -52,16 +56,17 @@ def Newton(intervals):
         initialXPos = 0
         firstInterval = intervals[0]
         secondInterval = intervals[1]
-        if MyFunction(firstInterval) * MyPrimeFunction(firstInterval) > 0:
+        if MyPrimeFunction(firstInterval) * MyFunction(firstInterval) > 0:
             initialXPos = firstInterval
         else:
             initialXPos = secondInterval
-        numberToStop = initialXPos - MyFunction(initialXPos) / MyPrimeFunction(initialXPos)
+        finalNumber = initialXPos - MyFunction(initialXPos) / MyPrimeFunction(initialXPos)
         numberOfIterations = numberOfIterations + 1
-        while epsilonValue < abs(MyFunction(numberToStop)):
-            numberToStop = numberToStop - MyFunction(numberToStop) / MyPrimeFunction(numberToStop)
+
+        while epsilonValue < abs(MyFunction(finalNumber)):
+            finalNumber = finalNumber - MyFunction(finalNumber) / MyPrimeFunction(finalNumber)
             numberOfIterations = numberOfIterations + 1
-    return numberToStop, numberOfIterations
+    return finalNumber, numberOfIterations
 
 #endregion Methods Functions
 
