@@ -43,6 +43,21 @@ def bisectionMethod(intervals):
             numberOfIterations = numberOfIterations + 1
     return numberToStop, numberOfIterations
 
+def chordsMethod(intervals):
+    numberOfIterations = 0
+    for i in intervals:
+        numberToStop = epsilonValue * 10 ** 8
+        firstInterval = intervals[0]
+        secondInterval = intervals[1]
+        while abs(secondInterval - firstInterval) > epsilonValue and abs(MyFunction(numberToStop)) > epsilonValue:
+            numberToStop = (firstInterval * MyFunction(secondInterval) - secondInterval * MyFunction(firstInterval)) / (MyFunction(secondInterval) - MyFunction(firstInterval))
+            if MyFunction(numberToStop) * MyFunction(firstInterval) <= 0:
+                secondInterval = numberToStop
+            elif MyFunction(numberToStop) * MyFunction(secondInterval) <= 0:
+                firstInterval = numberToStop
+            numberOfIterations = numberOfIterations + 1
+    return numberToStop, numberOfIterations
+
 def newtonMethod(intervals):
     numberOfIterations = 0
     for i in intervals:
@@ -75,5 +90,9 @@ print("Root of equation:\n", bisectionRoots, "\nNumber of iterations:\n", bisect
 print("\nNewton:")
 newtonRoots, newtonIterations = newtonMethod(interval)
 print("Root of equation:\n", newtonRoots, "\nNumber of iterations:\n", newtonIterations)
+
+print("\nChords:")
+chordsRoots, chordsIterations = chordsMethod(interval)
+print("Root of equation:\n", chordsRoots, "\nNumber of iterations:\n", chordsIterations)
 
 #endregion Results
