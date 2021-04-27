@@ -43,7 +43,7 @@ def BisectionAndChords(intervals, index):
 
             if MyFunction(secondInterval) * MyFunction(finalNumber) <= 0:
                 firstInterval = finalNumber
-            elif MyFunction(firstInterval) * MyFunction(finalNumber) <= 0:
+            else:
                 secondInterval = finalNumber
 
             numberOfIterations = numberOfIterations + 1
@@ -57,10 +57,12 @@ def Newton(intervals):
         firstInterval = intervals[0]
         secondInterval = intervals[1]
 
+        # if same symbols (like + && +)
         if MyFunction(firstInterval) * MyPrimeFunction(firstInterval) > 0:
-            initialXPos = firstInterval
-        else:
             initialXPos = secondInterval
+        # if different symbols (like - && +)
+        else:
+            initialXPos = firstInterval
 
         finalNumber = initialXPos - MyFunction(initialXPos) / MyPrimeFunction(initialXPos)
         numberOfIterations = numberOfIterations + 1
