@@ -30,6 +30,17 @@ coeffs = {
         'c3': 0.313707, 'c4': 0.362684, 'c5': 0.362684, 'c6': 0.313707, 'c7': 0.222381, 'c8': 0.101228},
 }
 
+coeffcients =  [
+               [ 0.5, 2],
+               [-0.577350, 0.577350, 1, 1],
+               [-0.774597, 0, 0.774597, 0.555555, 0.888889, 0.555555],
+               [-0.861136, -0.339981, 0.339981, 0.861136, 0.347855, 0.652145, 0.652145, 0.347855],
+               [-0.906180, -0.538470, 0, 0.538470, 0.906180, 0.236927, 0.478629, 0.568889, 0.478629, 0.236927],
+               [-0.932470, -0.661210, -0.238620, 0.238620, 0.661210, 0.932470, 0.171324, 0.360761, 0.467914, 0.467914, 0.360761, 0.171324],
+               [-0.949108, -0.741531, -0.405845, 0, 0.405845, 0.741531, 0.949108, 0.129485, 0.279705, 0.381830, 0.417960, 0.381830, 0.279705, 0.129485],
+               [ -0.960290, -0.796666, -0.525532, -0.183434, 0.183434, 0.525532, 0.796666, 0.960290, 0.101228, 0.222381, 0.313707, 0.362684, 0.362684, 0.313707, 0.222381, 0.101228]
+               ]
+
 # endregion Starting Values
 
 #region Default Functions
@@ -119,7 +130,8 @@ def Gauss(firstInterval, secondInterval):
     print("N =", Nvalue)
     result = 0
     for index in range(Nvalue):
-        result = result + coeffs[Nvalue][f'c{index + 1}'] * ReverseMyFunction(coeffs[Nvalue][f'x{index + 1}'])
+        tempIndex = int(((len(coeffcients[Nvalue])/2)+index)-1)
+        result = result + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffs[Nvalue][f'x{index + 1}'])
     finalResult = ((secondInterval - firstInterval) / 2) * result
     return finalResult
 
