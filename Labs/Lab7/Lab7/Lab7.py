@@ -102,19 +102,20 @@ func_list = [MyFourthPrimeFunction, MySixthPrimeFunction, MyEigthPrimeFunction, 
 #endregion Default Functions
 
 def Simpson(firstInterval, secondInterval):
-    tempValue1 = 0
-    tempValue2 = 0
-    granic_fault, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
+
+    tempValues = [0, 0]
     sum = MyFunction(secondInterval) + MyFunction(firstInterval)
+    granic_fault, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
     width = (secondInterval - firstInterval) / (Nvalue * 2)
-    for i in range(1, Nvalue):
-        tempValue1 = tempValue1 + 2 * MyFunction(i * 2 * width + firstInterval)
-    sum = sum + tempValue1
     for i in range(1, Nvalue + 1):
-        tempValue2 = tempValue2 + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
-    sum = sum + tempValue2
+        tempValues[1] = tempValues[1] + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
+    sum = sum + tempValues[1]
+    for i in range(1, Nvalue):
+        tempValues[0] = tempValues[0] + 2 * MyFunction(i * 2 * width + firstInterval)
+    sum = sum + tempValues[0]
     finalResult = sum * width / 3
     print("N =", Nvalue)
+
     return finalResult
 
 def SimpsonDifference(firstInterval, secondInterval, Nvalue):
@@ -127,12 +128,12 @@ def SimpsonDifference(firstInterval, secondInterval, Nvalue):
 
 def Gauss(firstInterval, secondInterval):
     granic_fault, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
-    print("N =", Nvalue)
     result = 0
-    for index in range(Nvalue):
-        tempIndex = int(((len(coeffcients[Nvalue])/2)+index)-1)
-        result = result + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffs[Nvalue][f'x{index + 1}'])
+    for i in range(Nvalue):
+        tempIndex = int(((len(coeffcients[Nvalue])/2)+i)-1)
+        result = result + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
     finalResult = ((secondInterval - firstInterval) / 2) * result
+    print("N =", Nvalue)
     return finalResult
 
 def GaussDifference(firstInterval, secondInterval, Nvalue):
