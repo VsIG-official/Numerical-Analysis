@@ -3,32 +3,15 @@ import numpy as np
 import scipy
 import scipy.optimize
 from math import cos, sin, factorial
+np.set_printoptions(suppress=True,
+   formatter={'float_kind':'{:0.2f}'.format})
 
 epsilonValue = 0.0001
 leftBoard = 0.1
 rightBoard = 1.1
 defaultNforSimpson = 1
 defaultNforGauss = 2
-
-coeffs = {
-    1: {'x1': 0.5, 'c1': 2},
-    2: {'x1': -0.577350, 'x2': 0.577350, 'c1': 1, 'c2': 1},
-    3: {'x1': -0.774597, 'x2': 0, 'x3': 0.774597, 'c1': 0.555555, 'c2': 0.888889, 'c3': 0.555555},
-    4: {'x1': -0.861136, 'x2': -0.339981, 'x3': 0.339981, 'x4': 0.861136, 'c1': 0.347855, 'c2': 0.652145,
-        'c3': 0.652145, 'c4': 0.347855},
-    5: {'x1': -0.906180, 'x2': -0.538470, 'x3': 0, 'x4': 0.538470, 'x5': 0.906180, 'c1': 0.236927, 'c2': 0.478629,
-        'c3': 0.568889, 'c4': 0.478629, 'c5': 0.236927},
-    6: {'x1': -0.932470, 'x2': -0.661210, 'x3': -0.238620, 'x4': 0.238620, 'x5': 0.661210, 'x6': 0.932470,
-        'c1': 0.171324, 'c2': 0.360761,
-        'c3': 0.467914, 'c4': 0.467914, 'c5': 0.360761, 'c6': 0.171324},
-    7: {'x1': -0.949108, 'x2': -0.741531, 'x3': -0.405845, 'x4': 0, 'x5': 0.405845, 'x6': 0.741531, 'x7': 0.949108,
-        'c1': 0.129485, 'c2': 0.279705,
-        'c3': 0.381830, 'c4': 0.417960, 'c5': 0.381830, 'c6': 0.279705, 'c7': 0.129485},
-    8: {'x1': -0.960290, 'x2': -0.796666, 'x3': -0.525532, 'x4': -0.183434, 'x5': 0.183434, 'x6': 0.525532,
-        'x7': 0.796666, 'x8': 0.960290,
-        'c1': 0.101228, 'c2': 0.222381,
-        'c3': 0.313707, 'c4': 0.362684, 'c5': 0.362684, 'c6': 0.313707, 'c7': 0.222381, 'c8': 0.101228},
-}
+rounding = 5
 
 coeffcients =  [
                [ 0.5, 2],
@@ -105,7 +88,7 @@ def Simpson(firstInterval, secondInterval):
 
     tempValues = [0, 0]
     sum = MyFunction(secondInterval) + MyFunction(firstInterval)
-    granic_fault, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
+    analyzeDifference, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
     width = (secondInterval - firstInterval) / (Nvalue * 2)
     for i in range(1, Nvalue + 1):
         tempValues[1] = tempValues[1] + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
@@ -115,6 +98,7 @@ def Simpson(firstInterval, secondInterval):
     sum = sum + tempValues[0]
     finalResult = sum * width / 3
     print("N =", Nvalue)
+    print("Difference =", "%-.15f"%(analyzeDifference))
 
     return finalResult
 
@@ -127,13 +111,15 @@ def SimpsonDifference(firstInterval, secondInterval, Nvalue):
     return difference, Nvalue
 
 def Gauss(firstInterval, secondInterval):
-    granic_fault, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
+    analyzeDifference, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
     result = 0
     for i in range(Nvalue):
         tempIndex = int(((len(coeffcients[Nvalue])/2)+i)-1)
         result = result + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
     finalResult = ((secondInterval - firstInterval) / 2) * result
     print("N =", Nvalue)
+    print("Difference =", "%-.15f"%(analyzeDifference))
+
     return finalResult
 
 def GaussDifference(firstInterval, secondInterval, Nvalue):
