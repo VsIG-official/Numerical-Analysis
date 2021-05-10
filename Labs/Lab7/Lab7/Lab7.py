@@ -108,7 +108,6 @@ def Simpson(firstInterval, secondInterval):
 
 def SimpsonDifference(firstInterval, secondInterval, Nvalue):
     M = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-    print(M[1][0])
     difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
     while difference > epsilonValue:
         difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
@@ -127,7 +126,6 @@ def Gauss(firstInterval, secondInterval):
 def GaussDifference(firstInterval, secondInterval, Nvalue):
     for func in func_list:
         M = scipy.optimize.fmin_l_bfgs_b(lambda x: -func(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-        print(M[1][0])
         difference = abs(M[1][0])*(((factorial(Nvalue))**4)*(secondInterval-firstInterval)**(2*Nvalue+1))/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
         if difference < epsilonValue:
             break
