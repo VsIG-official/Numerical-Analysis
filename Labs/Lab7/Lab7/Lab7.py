@@ -1,7 +1,7 @@
 # region Starting Values
 import numpy as np
 import scipy
-import scipy.optimize as opt
+import scipy.optimize
 from math import cos, sin, factorial
 
 epsilonValue = 0.0001
@@ -91,30 +91,28 @@ func_list = [MyFourthPrimeFunction, MySixthPrimeFunction, MyEigthPrimeFunction, 
 #endregion Default Functions
 
 def Simpson(firstInterval, secondInterval):
+    tempValue1 = 0
+    tempValue2 = 0
     N, granic_fault = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
-    sum = MyFunction(firstInterval) + MyFunction(secondInterval)
-    width = (secondInterval - firstInterval) / (2 * N)
-    print("N =", N)
-    firstPart = 0
-    secondPart = 0
+    sum = MyFunction(secondInterval) + MyFunction(firstInterval)
+    width = (secondInterval - firstInterval) / (N * 2)
     for i in range(1, N):
-        firstPart = firstPart + MyFunction(2 * width * i + firstInterval) * 2
-    sum = sum + firstPart
+        tempValue1 = tempValue1 + 2 * MyFunction(i * 2 * width + firstInterval)
+    sum = sum + tempValue1
     for i in range(1, N + 1):
-        secondPart = secondPart + MyFunction(width * (2 * i - 1) + firstInterval) * 4
-    sum = sum + secondPart
+        tempValue2 = tempValue2 + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
+    sum = sum + tempValue2
     finalResult = sum * width / 3
+    print("N =", N)
     return finalResult
 
-
 def SimpsonDifference(firstInterval, secondInterval, N):
-    M = opt.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-    fault = abs(M[1][0]) * ((secondInterval - firstInterval) ** 5) / (180 * N ** 4)
+    M = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
+    fault = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((N ** 4) * 180)
     while fault > epsilonValue:
-        fault = abs(M[1][0]) * ((secondInterval - firstInterval) ** 5) / (180 * N ** 4)
+        fault = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((N ** 4) * 180)
         N = N + 1
     return N, fault
-
 
 def Gauss(firstInterval, secondInterval):
     N, granic_fault = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
@@ -125,12 +123,10 @@ def Gauss(firstInterval, secondInterval):
     finalResult = ((secondInterval - firstInterval) / 2) * result
     return finalResult
 
-
 def GaussDifference(firstInterval, secondInterval, N):
     for func in func_list:
-        M = opt.fmin_l_bfgs_b(lambda x: -func(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-        fault = abs(M[1][0]) * (((factorial(N)) ** 4) * (secondInterval - firstInterval) ** (2 * N + 1)) / (
-                (2 * N + 1) * (factorial(2 * N)) ** 3)
+        M = scipy.optimize.fmin_l_bfgs_b(lambda x: -func(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
+        fault = abs(M[1][0])*(((factorial(N))**4)*(secondInterval-firstInterval)**(2*N+1))/((2*N+1)*(factorial(2*N))**3)
         if fault < epsilonValue:
             break
         N = N + 1
