@@ -93,44 +93,46 @@ func_list = [MyFourthPrimeFunction, MySixthPrimeFunction, MyEigthPrimeFunction, 
 def Simpson(firstInterval, secondInterval):
     tempValue1 = 0
     tempValue2 = 0
-    N, granic_fault = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
+    granic_fault, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
     sum = MyFunction(secondInterval) + MyFunction(firstInterval)
-    width = (secondInterval - firstInterval) / (N * 2)
-    for i in range(1, N):
+    width = (secondInterval - firstInterval) / (Nvalue * 2)
+    for i in range(1, Nvalue):
         tempValue1 = tempValue1 + 2 * MyFunction(i * 2 * width + firstInterval)
     sum = sum + tempValue1
-    for i in range(1, N + 1):
+    for i in range(1, Nvalue + 1):
         tempValue2 = tempValue2 + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
     sum = sum + tempValue2
     finalResult = sum * width / 3
-    print("N =", N)
+    print("N =", Nvalue)
     return finalResult
 
-def SimpsonDifference(firstInterval, secondInterval, N):
+def SimpsonDifference(firstInterval, secondInterval, Nvalue):
     M = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-    fault = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((N ** 4) * 180)
-    while fault > epsilonValue:
-        fault = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((N ** 4) * 180)
-        N = N + 1
-    return N, fault
+    print(M[1][0])
+    difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
+    while difference > epsilonValue:
+        difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
+        Nvalue = Nvalue + 1
+    return difference, Nvalue
 
 def Gauss(firstInterval, secondInterval):
-    N, granic_fault = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
-    print("N =", N)
+    granic_fault, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
+    print("N =", Nvalue)
     result = 0
-    for index in range(N):
-        result = result + coeffs[N][f'c{index + 1}'] * ReverseMyFunction(coeffs[N][f'x{index + 1}'])
+    for index in range(Nvalue):
+        result = result + coeffs[Nvalue][f'c{index + 1}'] * ReverseMyFunction(coeffs[Nvalue][f'x{index + 1}'])
     finalResult = ((secondInterval - firstInterval) / 2) * result
     return finalResult
 
-def GaussDifference(firstInterval, secondInterval, N):
+def GaussDifference(firstInterval, secondInterval, Nvalue):
     for func in func_list:
         M = scipy.optimize.fmin_l_bfgs_b(lambda x: -func(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-        fault = abs(M[1][0])*(((factorial(N))**4)*(secondInterval-firstInterval)**(2*N+1))/((2*N+1)*(factorial(2*N))**3)
-        if fault < epsilonValue:
+        print(M[1][0])
+        difference = abs(M[1][0])*(((factorial(Nvalue))**4)*(secondInterval-firstInterval)**(2*Nvalue+1))/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
+        if difference < epsilonValue:
             break
-        N = N + 1
-    return N, fault
+        Nvalue = Nvalue + 1
+    return difference, Nvalue
 
 
 print(Simpson(leftBoard, rightBoard))
