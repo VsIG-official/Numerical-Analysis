@@ -91,11 +91,11 @@ def Simpson(firstInterval, secondInterval):
     totalAmount = MyFunction(secondInterval) + MyFunction(firstInterval)
     analyzeDifference, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
     intervalLength = (secondInterval - firstInterval) / (Nvalue * 2)
-    for i in range(1, Nvalue + 1):
-        tempValues[1] = tempValues[1] + 4 * MyFunction(intervalLength * (i * 2 - 1) + firstInterval)
+    for z in range(1, Nvalue + 1):
+        tempValues[1] = tempValues[1] + 4 * MyFunction(intervalLength * (z * 2 - 1) + firstInterval)
     totalAmount = totalAmount + tempValues[1]
-    for i in range(1, Nvalue):
-        tempValues[0] = tempValues[0] + 2 * MyFunction(i * 2 * intervalLength + firstInterval)
+    for z in range(1, Nvalue):
+        tempValues[0] = tempValues[0] + 2 * MyFunction(z * 2 * intervalLength + firstInterval)
     totalAmount = totalAmount + tempValues[0]
     finalResult = totalAmount * intervalLength / 3
 
@@ -116,19 +116,19 @@ def Gauss(firstInterval, secondInterval):
 
     analyzeDifference, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
     tempResult = 0
-    for i in range(Nvalue):
-        tempIndex = int(((len(coeffcients[Nvalue])/2)+i)-1)
-        tempResult = tempResult + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
+    for z in range(Nvalue):
+        tempIndex = int(((len(coeffcients[Nvalue])/2)+z)-1)
+        tempResult = tempResult + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][z])
     finalResult = ((secondInterval - firstInterval) / 2) * tempResult
 
     return finalResult, analyzeDifference, Nvalue
 
 def GaussDifference(firstInterval, secondInterval, Nvalue):
 
-    for i in range(len(SpecificFunctionsForTheGauss)):
-        valueForAccuracy = scipy.optimize.fmin_l_bfgs_b(lambda x: -SpecificFunctionsForTheGauss[i](x),
+    for z in range(len(SpecificFunctionsForTheGauss)):
+        valueForAccuracy = scipy.optimize.fmin_l_bfgs_b(lambda x: -SpecificFunctionsForTheGauss[z](x),
                                                        1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-        difference = (((secondInterval-firstInterval)**(2*Nvalue+1))*((factorial(Nvalue))**4))*abs(valueForAccuracy[1][0])/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
+        difference = (((secondInterval-firstInterval)**((Nvalue+1)*2))*((factorial(Nvalue))**4))*abs(valueForAccuracy[1][0])/(((factorial(2*Nvalue))**3)*(2*Nvalue+1))
         if difference < epsilonValue:
             break
         Nvalue = Nvalue + 1
