@@ -103,10 +103,11 @@ def Simpson(firstInterval, secondInterval):
 
 def SimpsonDifference(firstInterval, secondInterval, Nvalue):
 
-    M = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-    difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
+    valueForAccuracy = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x),
+                                                    1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
+    difference = (((secondInterval - firstInterval) ** 5) * abs(valueForAccuracy[1][0])) / ((Nvalue ** 4) * 180)
     while difference > epsilonValue:
-        difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
+        difference = (((secondInterval - firstInterval) ** 5) * abs(valueForAccuracy[1][0])) / ((Nvalue ** 4) * 180)
         Nvalue = Nvalue + 1
 
     return difference, Nvalue
@@ -125,8 +126,9 @@ def Gauss(firstInterval, secondInterval):
 def GaussDifference(firstInterval, secondInterval, Nvalue):
 
     for i in range(len(SpecificFunctionsForTheGauss)):
-        M = scipy.optimize.fmin_l_bfgs_b(lambda x: -SpecificFunctionsForTheGauss[i](x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
-        difference = abs(M[1][0])*(((factorial(Nvalue))**4)*(secondInterval-firstInterval)**(2*Nvalue+1))/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
+        valueForAccuracy = scipy.optimize.fmin_l_bfgs_b(lambda x: -SpecificFunctionsForTheGauss[i](x),
+                                                       1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
+        difference = (((secondInterval-firstInterval)**(2*Nvalue+1))*((factorial(Nvalue))**4))*abs(valueForAccuracy[1][0])/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
         if difference < epsilonValue:
             break
         Nvalue = Nvalue + 1
