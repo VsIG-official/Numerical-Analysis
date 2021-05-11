@@ -98,10 +98,8 @@ def Simpson(firstInterval, secondInterval):
         tempValues[0] = tempValues[0] + 2 * MyFunction(i * 2 * intervalLength + firstInterval)
     totalAmount = totalAmount + tempValues[0]
     finalResult = totalAmount * intervalLength / 3
-    print("N =", Nvalue)
-    print("Difference =", "%-.15f"%(analyzeDifference))
 
-    return finalResult
+    return finalResult, analyzeDifference, Nvalue
 
 def SimpsonDifference(firstInterval, secondInterval, Nvalue):
 
@@ -121,10 +119,8 @@ def Gauss(firstInterval, secondInterval):
         tempIndex = int(((len(coeffcients[Nvalue])/2)+i)-1)
         tempResult = tempResult + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
     finalResult = ((secondInterval - firstInterval) / 2) * tempResult
-    print("N =", Nvalue)
-    print("Difference =", "%-.15f"%(analyzeDifference))
 
-    return finalResult
+    return finalResult, analyzeDifference, Nvalue
 
 def GaussDifference(firstInterval, secondInterval, Nvalue):
 
@@ -137,6 +133,10 @@ def GaussDifference(firstInterval, secondInterval, Nvalue):
 
     return difference, Nvalue
 
+print("Simpson Method:")
+simpsonResult, simpsonDiff, simpsonN = Simpson(leftBoard, rightBoard)
+print("Result =", simpsonResult, "\n", "Difference =", "%-.15f"%(simpsonDiff), "\n", "N =", simpsonN, "\n")
 
-print(Simpson(leftBoard, rightBoard))
-print(Gauss(leftBoard, rightBoard))
+print("Gauss Method:")
+gaussResult, gaussDiff, gaussN = Gauss(leftBoard, rightBoard)
+print("Result =", gaussResult, "\n", "Difference =", "%-.15f"%(gaussDiff), "\n", "N =", gaussN, "\n")
