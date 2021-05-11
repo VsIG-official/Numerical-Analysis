@@ -1,10 +1,10 @@
 # region Starting Values
-import numpy as np
+import numpy
 import scipy
-import scipy.optimize
-from math import cos, sin, factorial
-np.set_printoptions(suppress=True,
+numpy.set_printoptions(suppress=True,
    formatter={'float_kind':'{:0.2f}'.format})
+import scipy.optimize
+from math import factorial, sin, cos
 
 epsilonValue = 0.0001
 leftBoard = 0.1
@@ -79,56 +79,62 @@ def MySixteenthPrimeFunction(x):
           +(10461394944000*cos(x)/(x+1)**14)+(20922789888000*cos(x)/(x+1)**15)+(20922789888000*cos(x)/(x+1)**16))/(x+1)
     return func
 
-func_list = [MyFourthPrimeFunction, MySixthPrimeFunction, MyEigthPrimeFunction,  MyTenthPrimeFunction, MyTwelwethPrimeFunction,
-  MyFourteenthPrimeFunction, MySixteenthPrimeFunction]
+SpecificFunctionsForTheGauss = [MyFourthPrimeFunction, MySixthPrimeFunction, MyEigthPrimeFunction,
+                                MyTenthPrimeFunction, MyTwelwethPrimeFunction,
+                                MyFourteenthPrimeFunction, MySixteenthPrimeFunction]
 
 #endregion Default Functions
 
 def Simpson(firstInterval, secondInterval):
 
     tempValues = [0, 0]
-    sum = MyFunction(secondInterval) + MyFunction(firstInterval)
+    totalAmount = MyFunction(secondInterval) + MyFunction(firstInterval)
     analyzeDifference, Nvalue = SimpsonDifference(firstInterval, secondInterval, defaultNforSimpson)
-    width = (secondInterval - firstInterval) / (Nvalue * 2)
+    intervalLength = (secondInterval - firstInterval) / (Nvalue * 2)
     for i in range(1, Nvalue + 1):
-        tempValues[1] = tempValues[1] + 4 * MyFunction(width * (i * 2 - 1) + firstInterval)
-    sum = sum + tempValues[1]
+        tempValues[1] = tempValues[1] + 4 * MyFunction(intervalLength * (i * 2 - 1) + firstInterval)
+    totalAmount = totalAmount + tempValues[1]
     for i in range(1, Nvalue):
-        tempValues[0] = tempValues[0] + 2 * MyFunction(i * 2 * width + firstInterval)
-    sum = sum + tempValues[0]
-    finalResult = sum * width / 3
+        tempValues[0] = tempValues[0] + 2 * MyFunction(i * 2 * intervalLength + firstInterval)
+    totalAmount = totalAmount + tempValues[0]
+    finalResult = totalAmount * intervalLength / 3
     print("N =", Nvalue)
     print("Difference =", "%-.15f"%(analyzeDifference))
 
     return finalResult
 
 def SimpsonDifference(firstInterval, secondInterval, Nvalue):
+
     M = scipy.optimize.fmin_l_bfgs_b(lambda x: -MyFourthPrimeFunction(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
     difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
     while difference > epsilonValue:
         difference = (((secondInterval - firstInterval) ** 5) * abs(M[1][0])) / ((Nvalue ** 4) * 180)
         Nvalue = Nvalue + 1
+
     return difference, Nvalue
 
 def Gauss(firstInterval, secondInterval):
+
     analyzeDifference, Nvalue = GaussDifference(firstInterval, secondInterval, defaultNforGauss)
-    result = 0
+    tempResult = 0
     for i in range(Nvalue):
         tempIndex = int(((len(coeffcients[Nvalue])/2)+i)-1)
-        result = result + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
-    finalResult = ((secondInterval - firstInterval) / 2) * result
+        tempResult = tempResult + coeffcients[Nvalue-1][tempIndex] * ReverseMyFunction(coeffcients[Nvalue-1][i])
+    finalResult = ((secondInterval - firstInterval) / 2) * tempResult
     print("N =", Nvalue)
     print("Difference =", "%-.15f"%(analyzeDifference))
 
     return finalResult
 
 def GaussDifference(firstInterval, secondInterval, Nvalue):
-    for func in func_list:
-        M = scipy.optimize.fmin_l_bfgs_b(lambda x: -func(x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
+
+    for i in range(len(SpecificFunctionsForTheGauss)):
+        M = scipy.optimize.fmin_l_bfgs_b(lambda x: -SpecificFunctionsForTheGauss[i](x), 1.0, bounds=[(firstInterval, secondInterval)], approx_grad=True)
         difference = abs(M[1][0])*(((factorial(Nvalue))**4)*(secondInterval-firstInterval)**(2*Nvalue+1))/((2*Nvalue+1)*(factorial(2*Nvalue))**3)
         if difference < epsilonValue:
             break
         Nvalue = Nvalue + 1
+
     return difference, Nvalue
 
 
