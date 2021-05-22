@@ -32,5 +32,7 @@ x0 = 0
 y = -1
 x = 0.5
 h = 0.1
-while
-  print ("The value of y (", y, ") at x (", x, ") is:", rungeKutta(x0, y, x, h))
+
+while x >= 0:
+    print ("The value of y (", y, ") at x (", round(x, 1), ") is:", rungeKutta(x0, y, x, h))
+    x = x - 0.1
