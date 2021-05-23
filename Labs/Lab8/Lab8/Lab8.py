@@ -14,7 +14,6 @@ def rungeKutta(x0, y0, x, h):
     # Iterate for number of iterations
     y = y0
     for i in range(1, n + 1):
-        "Apply Runge Kutta Formulas to find next value of y"
         k1 = h * MyPrimeFunction(x0, y)
         k2 = h * MyPrimeFunction(x0 + 0.5 * h, y + 0.5 * k1)
         k3 = h * MyPrimeFunction(x0 + 0.5 * h, y + 0.5 * k2)
