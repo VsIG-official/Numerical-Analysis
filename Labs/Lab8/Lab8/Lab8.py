@@ -1,3 +1,4 @@
+# region Starting Values
 import math
 
 epsilonValue = 0.1
@@ -12,6 +13,8 @@ rightBorder = 4
 yZero = 0
 yFirstAdams = []
 ySecondAdams = []
+
+# endregion Starting Values
 
 def MyPrimeFunction(x, y):
     result = math.e ** (-A * x) * (y ** 2 + B)
@@ -56,7 +59,7 @@ def RungeKuttaFull():
 
         error = abs((yFirstRunge[iterations] - ySecondRunge[iterations]) / (15))
 
-        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", tempOne, "\t", error)
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", tempOne, "\t", "%-.15f"%(error))
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
 
         # For Adams Method
@@ -83,7 +86,6 @@ def Adams(firstValuesFromRunge, h):
             firstValuesFromRunge.append(extra_y)
         else:
             firstValuesFromRunge.append(intra_y)
-        #print(iterations-3, "\t\t", round((iterations - 3)* 0.1, 1), "\t", firstValuesFromRunge[iterations-3], "\t")
         iterations = iterations + 1
     return firstValuesFromRunge
 
@@ -95,7 +97,7 @@ def AdamsFull():
 
     for x in range(41):
         error = abs((yFirstAdamsErrors[x] - ySecondAdamsErrors[x]) / (15))
-        print(x, "\t\t", round(x * 0.1, 1), "\t", yFirstAdamsErrors[x], "\t", error)
+        print(x, "\t\t", round(x * 0.1, 1), "\t", yFirstAdamsErrors[x], "\t", "%-.15f"%(error))
 
 def RunAll():
     print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
