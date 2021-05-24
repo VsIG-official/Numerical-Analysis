@@ -50,10 +50,10 @@ def RungeKuttaFull():
         tempTwo = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h/2)
         ySecondRunge.append(tempTwo)
 
-        # error = (yFirstRunge[tempValueForLeftBorder] - ySecondRunge[iterations * 2]) / (16 - 1)
-        # errors.append(error)
+        error = (yFirstRunge[iterations] - ySecondRunge[iterations]) / (16 - 1)
+        errors.append(error)
 
-        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t")
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t", errors[iterations])
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
         iterations = iterations + 1
 
