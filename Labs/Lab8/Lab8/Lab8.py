@@ -37,8 +37,11 @@ def rungeKutta(x0, y0, x, h):
 
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
 
-tempValueForRightBorder = rightBorder
+tempValueForLeftBorder = leftBorder
+iterations = 0
 
-while tempValueForRightBorder >= 0:
-    print ("The value of y (", yZero, ") at x (", round(tempValueForRightBorder, 1), ") is:", rungeKutta(leftBorder, yZero, tempValueForRightBorder, h))
-    tempValueForRightBorder = tempValueForRightBorder - 0.1
+print("iterations\t x\t y\t\t\terror")
+while tempValueForLeftBorder <= rightBorder + 0.1:
+    print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", rungeKutta(leftBorder, yZero, tempValueForLeftBorder, h))
+    tempValueForLeftBorder = tempValueForLeftBorder + 0.1
+    iterations = iterations + 1
