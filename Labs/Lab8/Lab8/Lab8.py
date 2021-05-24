@@ -1,4 +1,3 @@
-
 import math
 
 epsilonValue = 0.1
@@ -32,11 +31,9 @@ def RungeKutta(x0, y0, x, h):
         fault = abs((k2 - k3) / (k1 - k2))
         if fault > epsilonValue:
             h /= 2
-            n = n * 2
 
         # Update next value of x
         x0 = x0 + h
-        # print(y)
     return y
 
 def RungeKuttaFull():
@@ -44,18 +41,21 @@ def RungeKuttaFull():
     iterations = 0
     yFirstRunge = []
     ySecondRunge = []
-    print("iterations\t x\t y\t\t\terror")
+    print("iterations\t x\t y\t\t\t error")
     while tempValueForLeftBorder <= rightBorder + 0.1:
         tempOne = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h)
         yFirstRunge.append(tempOne)
-        tempTwo = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h/2)
+        tempTwo = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h / 2)
         ySecondRunge.append(tempTwo)
 
-        error = abs((yFirstRunge[iterations] - ySecondRunge[iterations]) / (16 - 1))
+        error = abs((yFirstRunge[iterations] - ySecondRunge[iterations]) / (15))
 
-        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t", error)
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", tempOne, "\t", error)
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
         iterations = iterations + 1
+
+#def Adams():
+
 
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
 
