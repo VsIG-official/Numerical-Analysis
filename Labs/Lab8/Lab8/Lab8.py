@@ -8,6 +8,8 @@ h = 0.1
 leftBorder = 0
 rightBorder = 4
 yZero = 0
+yFirstAdams = []
+ySecondAdams = []
 
 def MyPrimeFunction(x, y):
     result = math.e ** (-A * x) * (y ** 2 + B)
@@ -54,10 +56,34 @@ def RungeKuttaFull():
 
         print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", tempOne, "\t", error)
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
+
+        # For Adams Method
+        if iterations <= 3:
+            yFirstAdams.append(yFirstRunge[iterations])
+            ySecondAdams.append(ySecondRunge[iterations])
+
         iterations = iterations + 1
 
-#def Adams():
-
+def Adams(firstValues, h):
+    iterations = 3
+    while iterations < ((rightBorder - leftBorder) / h):
+        k1 = MyPrimeFunction(rg_res[iterations][0], rg_res[iterations][1])
+        k2 = MyPrimeFunction(rg_res[iterations - 1][0], rg_res[iterations - 1][1])
+        k3 = MyPrimeFunction(rg_res[iterations - 2][0], rg_res[iterations - 2][1])
+        k4 = MyPrimeFunction(rg_res[iterations - 3][0], rg_res[iterations - 3][1])
+        extra_y = rg_res[iterations][1] + h / 24 * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4)
+        next_x = rg_res[iterations][0] + h
+        intra_y = rg_res[iterations][1] + h / 24 * (9 * MyPrimeFunction(next_x, extra_y) + 19 * k1 - 5 * k2 + k3)
+        fault = abs(intra_y - extra_y)
+        if fault > epsilon:
+            h / 2
+        if extra_y == intra_y:
+            table.append([next_x, extra_y, fault])
+            rg_res.append([next_x, extra_y])
+        else:
+            table.append([next_x, intra_y])
+            rg_res.append([next_x, intra_y])
+        iterations = iterations + 1
 
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
 
