@@ -14,9 +14,7 @@ def MyPrimeFunction(x, y):
     result = math.e ** (-A * x) * (y ** 2 + B)
     return result
 
-# Finds value of y for a given x using step size h
-# and initial value y0 at x0.
-def rungeKutta(x0, y0, x, h):
+def RungeKutta(x0, y0, x, h):
     # Count number of iterations using step size or
     # step height h
     n = (int)((x - x0)/h)
@@ -31,17 +29,23 @@ def rungeKutta(x0, y0, x, h):
         # Update next value of y
         y = y + (1.0 / 6.0)*(k1 + 2 * k2 + 2 * k3 + k4)
 
+        fault = abs((k2 - k3) / (k1 - k2))
+        if fault > epsilonValue:
+            h /= 2
+
         # Update next value of x
         x0 = x0 + h
     return y
 
+def RungeKuttaFull():
+    tempValueForLeftBorder = leftBorder
+    iterations = 0
+    print("iterations\t x\t y\t\t\terror")
+    while tempValueForLeftBorder <= rightBorder + 0.1:
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h))
+        tempValueForLeftBorder = tempValueForLeftBorder + 0.1
+        iterations = iterations + 1
+
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
 
-tempValueForLeftBorder = leftBorder
-iterations = 0
-
-print("iterations\t x\t y\t\t\terror")
-while tempValueForLeftBorder <= rightBorder + 0.1:
-    print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", rungeKutta(leftBorder, yZero, tempValueForLeftBorder, h))
-    tempValueForLeftBorder = tempValueForLeftBorder + 0.1
-    iterations = iterations + 1
+RungeKuttaFull()
