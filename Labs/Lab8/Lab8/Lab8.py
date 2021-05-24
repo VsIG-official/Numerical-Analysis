@@ -40,9 +40,20 @@ def RungeKutta(x0, y0, x, h):
 def RungeKuttaFull():
     tempValueForLeftBorder = leftBorder
     iterations = 0
+    yFirstRunge = []
+    ySecondRunge = []
+    errors = []
     print("iterations\t x\t y\t\t\terror")
     while tempValueForLeftBorder <= rightBorder + 0.1:
-        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h))
+        tempOne = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h)
+        yFirstRunge.append(tempOne)
+        tempTwo = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h/2)
+        ySecondRunge.append(tempTwo)
+
+        # error = (yFirstRunge[tempValueForLeftBorder] - ySecondRunge[iterations * 2]) / (16 - 1)
+        # errors.append(error)
+
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t")
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
         iterations = iterations + 1
 
