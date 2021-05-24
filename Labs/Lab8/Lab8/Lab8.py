@@ -42,6 +42,8 @@ def RungeKuttaFull():
     yFirstRunge = []
     ySecondRunge = []
     print("iterations\t x\t y\t\t\t error")
+
+    # do the Runge's rule
     while tempValueForLeftBorder <= rightBorder + 0.1:
         tempOne = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h)
         yFirstRunge.append(tempOne)
