@@ -5,6 +5,8 @@ variant = 9
 N = K = variant - 5
 A = B = 1 + 0.4 * N
 h = 0.1
+rungeConstants = []
+adamsConstants = []
 leftBorder = 0
 rightBorder = 4
 yZero = 0
@@ -65,7 +67,6 @@ def RungeKuttaFull():
         iterations = iterations + 1
 
 def Adams(firstValuesFromRunge, h):
-    print("iterations\t x\t y\t\t\t error")
     iterations = 3
     while iterations < ((rightBorder - leftBorder) / h) + 4:
         k1 = MyPrimeFunction(h * iterations, firstValuesFromRunge[iterations])
@@ -82,11 +83,26 @@ def Adams(firstValuesFromRunge, h):
             firstValuesFromRunge.append(extra_y)
         else:
             firstValuesFromRunge.append(intra_y)
-        print(iterations-3, "\t\t", round((iterations - 3)* 0.1, 1), "\t", firstValuesFromRunge[iterations-3], "\t")
+        #print(iterations-3, "\t\t", round((iterations - 3)* 0.1, 1), "\t", firstValuesFromRunge[iterations-3], "\t")
         iterations = iterations + 1
+    return firstValuesFromRunge
 
-print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
+def AdamsFull():
+    print("iterations\t x\t y\t\t\t error")
 
-RungeKuttaFull()
-print()
-Adams(yFirstAdams, h)
+    yFirstAdamsErrors = Adams(yFirstAdams, h)
+    ySecondAdamsErrors = Adams(ySecondAdams, h)
+
+    for x in range(41):
+        error = abs((yFirstAdamsErrors[x] - ySecondAdamsErrors[x]) / (15))
+        print(x, "\t\t", round(x * 0.1, 1), "\t", yFirstAdamsErrors[x], "\t", error)
+
+def RunAll():
+    print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
+    print("Runge Kutta")
+    RungeKuttaFull()
+    print()
+    print("Adams")
+    AdamsFull()
+
+RunAll()
