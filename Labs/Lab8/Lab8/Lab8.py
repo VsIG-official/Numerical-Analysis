@@ -67,7 +67,7 @@ def RungeKuttaFull():
 def Adams(firstValues, h):
     iterations = 3
     while iterations < ((rightBorder - leftBorder) / h):
-        k1 = MyPrimeFunction(rg_res[iterations][0], rg_res[iterations][1])
+        k1 = MyPrimeFunction(h * 3 - 0.1, rg_res[iterations][1])
         k2 = MyPrimeFunction(rg_res[iterations - 1][0], rg_res[iterations - 1][1])
         k3 = MyPrimeFunction(rg_res[iterations - 2][0], rg_res[iterations - 2][1])
         k4 = MyPrimeFunction(rg_res[iterations - 3][0], rg_res[iterations - 3][1])
