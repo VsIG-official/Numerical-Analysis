@@ -67,7 +67,7 @@ def RungeKuttaFull():
 def Adams(firstValuesFromRunge, h):
     print("iterations\t x\t y\t\t\t error")
     iterations = 3
-    while iterations < ((rightBorder - leftBorder) / h):
+    while iterations < ((rightBorder - leftBorder) / h) + 4:
         k1 = MyPrimeFunction(h * iterations, firstValuesFromRunge[iterations])
         k2 = MyPrimeFunction(h * iterations - 0.1, firstValuesFromRunge[iterations-1])
         k3 = MyPrimeFunction(h * iterations - 0.2, firstValuesFromRunge[iterations-2])
@@ -86,7 +86,7 @@ def Adams(firstValuesFromRunge, h):
         iterations = iterations + 1
 
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
-table = []
+
 RungeKuttaFull()
 print()
 Adams(yFirstAdams, h)
