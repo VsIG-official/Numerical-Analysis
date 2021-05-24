@@ -64,27 +64,29 @@ def RungeKuttaFull():
 
         iterations = iterations + 1
 
-def Adams(firstValues, h):
+def Adams(firstValuesFromRunge, h):
+    print("iterations\t x\t y\t\t\t error")
     iterations = 3
     while iterations < ((rightBorder - leftBorder) / h):
-        k1 = MyPrimeFunction(h * 3 - 0.1, rg_res[iterations][1])
-        k2 = MyPrimeFunction(rg_res[iterations - 1][0], rg_res[iterations - 1][1])
-        k3 = MyPrimeFunction(rg_res[iterations - 2][0], rg_res[iterations - 2][1])
-        k4 = MyPrimeFunction(rg_res[iterations - 3][0], rg_res[iterations - 3][1])
-        extra_y = rg_res[iterations][1] + h / 24 * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4)
-        next_x = rg_res[iterations][0] + h
-        intra_y = rg_res[iterations][1] + h / 24 * (9 * MyPrimeFunction(next_x, extra_y) + 19 * k1 - 5 * k2 + k3)
+        k1 = MyPrimeFunction(h * iterations, firstValuesFromRunge[iterations])
+        k2 = MyPrimeFunction(h * iterations - 0.1, firstValuesFromRunge[iterations-1])
+        k3 = MyPrimeFunction(h * iterations - 0.2, firstValuesFromRunge[iterations-2])
+        k4 = MyPrimeFunction(h * iterations - 0.3, firstValuesFromRunge[iterations-3])
+        extra_y = firstValuesFromRunge[iterations] + h / 24 * (55 * k1 - 59 * k2 + 37 * k3 - 9 * k4)
+        next_x = h * iterations + h
+        intra_y = firstValuesFromRunge[iterations] + h / 24 * (9 * MyPrimeFunction(next_x, extra_y) + 19 * k1 - 5 * k2 + k3)
         fault = abs(intra_y - extra_y)
-        if fault > epsilon:
+        if fault > epsilonValue:
             h / 2
         if extra_y == intra_y:
-            table.append([next_x, extra_y, fault])
-            rg_res.append([next_x, extra_y])
+            firstValuesFromRunge.append(extra_y)
         else:
-            table.append([next_x, intra_y])
-            rg_res.append([next_x, intra_y])
+            firstValuesFromRunge.append(intra_y)
+        print(iterations-3, "\t\t", round((iterations - 3)* 0.1, 1), "\t", firstValuesFromRunge[iterations-3], "\t")
         iterations = iterations + 1
 
 print("My variant: y' = e^(-ax)*(y^(2)+b), with y(0) =", yZero, ", intervals = [",leftBorder,",",rightBorder,"] and h =", h)
-
+table = []
 RungeKuttaFull()
+print()
+Adams(yFirstAdams, h)
