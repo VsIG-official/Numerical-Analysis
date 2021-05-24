@@ -20,7 +20,7 @@ def RungeKutta(x0, y0, x, h):
     n = (int)(x / h)
     # Iterate for number of iterations
     y = y0
-    for i in range(1, n + 1):
+    for i in range(0, n):
         k1 = h * MyPrimeFunction(x0, y)
         k2 = h * MyPrimeFunction(x0 + 0.5 * h, y + 0.5 * k1)
         k3 = h * MyPrimeFunction(x0 + 0.5 * h, y + 0.5 * k2)
@@ -36,6 +36,7 @@ def RungeKutta(x0, y0, x, h):
 
         # Update next value of x
         x0 = x0 + h
+        # print(y)
     return y
 
 def RungeKuttaFull():
@@ -43,7 +44,6 @@ def RungeKuttaFull():
     iterations = 0
     yFirstRunge = []
     ySecondRunge = []
-    errors = []
     print("iterations\t x\t y\t\t\terror")
     while tempValueForLeftBorder <= rightBorder + 0.1:
         tempOne = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h)
@@ -51,10 +51,9 @@ def RungeKuttaFull():
         tempTwo = RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h/2)
         ySecondRunge.append(tempTwo)
 
-        error = (yFirstRunge[iterations] - ySecondRunge[iterations]) / (16 - 1)
-        errors.append(error)
+        error = abs((yFirstRunge[iterations] - ySecondRunge[iterations]) / (16 - 1))
 
-        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t", errors[iterations])
+        print(iterations, "\t\t", round(tempValueForLeftBorder, 1), "\t", RungeKutta(leftBorder, yZero, tempValueForLeftBorder, h), "\t", error)
         tempValueForLeftBorder = tempValueForLeftBorder + 0.1
         iterations = iterations + 1
 
