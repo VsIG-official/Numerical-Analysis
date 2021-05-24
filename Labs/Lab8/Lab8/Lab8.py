@@ -17,7 +17,7 @@ def MyPrimeFunction(x, y):
 def RungeKutta(x0, y0, x, h):
     # Count number of iterations using step size or
     # step height h
-    n = (int)((x - x0)/h)
+    n = (int)(x / h)
     # Iterate for number of iterations
     y = y0
     for i in range(1, n + 1):
@@ -32,6 +32,7 @@ def RungeKutta(x0, y0, x, h):
         fault = abs((k2 - k3) / (k1 - k2))
         if fault > epsilonValue:
             h /= 2
+            n = n * 2
 
         # Update next value of x
         x0 = x0 + h
