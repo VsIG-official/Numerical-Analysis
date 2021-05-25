@@ -109,7 +109,7 @@ def AdamsFull():
     print(header)
 
     yFirstAdamsErrors = Adams(yFirstAdams, h)
-    ySecondAdamsErrors = Adams(ySecondAdams, h)
+    ySecondAdamsErrors = Adams(ySecondAdams, h) # should be h / 2
     # do the Runge's rule
     for x in range(numOfIter):
         faultValue = abs((yFirstAdamsErrors[x] - ySecondAdamsErrors[x]) / (rungeValue))
