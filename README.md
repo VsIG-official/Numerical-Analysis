@@ -1,7 +1,7 @@
 # Numerical Analysis
 
 <p align="center">
-  <img src="https://github.com/VsIG-official/Numerical-Analysis/blob/master/Labs/Additional-Materials/Graph.png" data-canonical-src="https://github.com/VsIG-official/Numerical-Analysis/blob/master/Labs/Additional-Materials/Graph.png" />
+  <img src="https://github.com/VsIG-official/Numerical-Analysis/blob/master/Labs/Additional-Materials/Graph.png" data-canonical-src="https://github.com/VsIG-official/Numerical-Analysis/blob/master/Labs/Additional-Materials/Graph.png" width="500" />
 </p>
 
 ## Table of Contents
@@ -17,7 +17,8 @@ My Labs for Numerical Analysis
 
 ## Badges
 
-
+[![Theme](https://img.shields.io/badge/Theme-Math-blue)](https://img.shields.io/badge/Theme-Math-blue)
+[![Language](https://img.shields.io/badge/Language-Python-blue)](https://img.shields.io/badge/Language-Python-blue)
 
 ---
 
